@@ -4,7 +4,306 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advokátní kancelář Mgr. Ondřej Mičaník</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #8e6c4d;
+            --accent: #b5651d;
+            --light: #f5f0e6;
+            --dark: #1a1a1a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+            color: var(--dark);
+            background-color: var(--light);
+            font-size: 18px;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.2rem;
+            font-weight: normal;
+            margin-top: 0.3rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        nav ul li {
+            margin: 0 1rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent);
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        .services-dropdown {
+            position: relative;
+        }
+        
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 250px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 100;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .services-dropdown:hover .dropdown {
+            display: block;
+        }
+        
+        .dropdown a {
+            color: var(--dark);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s;
+        }
+        
+        .dropdown a:hover {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            margin: 2rem 0;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://via.placeholder.com/1200x600?text=Právní+Poradenství');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            border-radius: 5px;
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .hero h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: normal;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        .content-section {
+            padding: 3rem 0;
+        }
+        
+        .content-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+            font-size: 2.2rem;
+        }
+        
+        .content-section p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
+        
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 900px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+            line-height: 1.8;
+            font-size: 18px;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #333;
+            transition: color 0.3s;
+        }
+        
+        .close:hover {
+            color: var(--accent);
+        }
+        
+        .service-details h2 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 2.2rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+        }
+        
+        .service-details h3 {
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+            font-size: 1.6rem;
+        }
+        
+        .service-details ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .service-details li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .service-details li::before {
+            content: "•";
+            color: var(--accent);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1.5rem;
+            position: absolute;
+            left: 0;
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+            
+            .hero {
+                padding: 2.5rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+            
+            .content-section h2 {
+                font-size: 1.8rem;
+            }
+            
+            .services-dropdown .dropdown {
+                position: static;
+                min-width: 100%;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -17,7 +316,22 @@
                 <ul>
                     <li><a href="index.html">Domů</a></li>
                     <li><a href="onas.html">O nás</a></li>
-                    <li><a href="pravni-sluzby.html">Právní služby</a></li>
+                    <li class="services-dropdown">
+                        <a href="pravni-sluzby.html">Právní služby</a>
+                        <div class="dropdown">
+                            <a class="service-link" onclick="openServiceModal('obcanske-pravo')">Občanské právo</a>
+                            <a class="service-link" onclick="openServiceModal('obchodni-pravo')">Obchodní právo</a>
+                            <a class="service-link" onclick="openServiceModal('nemovitosti')">Nemovitosti</a>
+                            <a class="service-link" onclick="openServiceModal('pracovni-pravo')">Pracovní právo</a>
+                            <a class="service-link" onclick="openServiceModal('dusevni-vlastnictvi')">Právo duševního vlastnictví</a>
+                            <a class="service-link" onclick="openServiceModal('vymahani')">Vymáhání pohledávek</a>
+                            <a class="service-link" onclick="openServiceModal('stavebni-pravo')">Stavební právo</a>
+                            <a class="service-link" onclick="openServiceModal('pojistovaci-pravo')">Pojišťovací právo</a>
+                            <a class="service-link" onclick="openServiceModal('trestni-pravo')">Trestní právo</a>
+                            <a class="service-link" onclick="openServiceModal('insolvencni-pravo')">Insolvenční právo</a>
+                            <a class="service-link" onclick="openServiceModal('rozvody')">Rozvody a vypořádání</a>
+                        </div>
+                    </li>
                     <li><a href="kontakt.html">Kontakt</a></li>
                     <li><a href="cenik.html">Ceník</a></li>
                 </ul>
@@ -43,5 +357,177 @@
             <p>Tvorba webových stránek, Redakční systém & Webdesign SUITU websites SE, © 2025</p>
         </div>
     </footer>
+
+    <div id="serviceModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeServiceModal()">&times;</span>
+            <div class="service-details" id="serviceDetails"></div>
+        </div>
+    </div>
+
+    <script>
+        function openServiceModal(serviceId) {
+            const serviceContent = getServiceContent(serviceId);
+            document.getElementById('serviceDetails').innerHTML = serviceContent;
+            document.getElementById('serviceModal').style.display = 'flex';
+        }
+        
+        function closeServiceModal() {
+            document.getElementById('serviceModal').style.display = 'none';
+        }
+        
+        function getServiceContent(serviceId) {
+            const services = {
+                'obcanske-pravo': `
+                    <h2>Občanské právo</h2>
+                    <h3>Vlastnické právo, zástavní právo, věcná břemena</h3>
+                    <ul>
+                        <li>převody vlastnického práva (nemovitosti, byty, podíly)</li>
+                        <li>soudní ochrana vlastnického práva</li>
+                        <li>zrušení a vypořádání spoluvlastnictví</li>
+                        <li>vypořádání společného jmění manželů v souvislosti s rozvodem</li>
+                        <li>soudní spory o vlastnictví</li>
+                        <li>problematika věcných břemen</li>
+                        <li>zástavní právo</li>
+                    </ul>
+                    
+                    <h3>Občanskoprávní závazky</h3>
+                    <ul>
+                        <li>sepis a konzultace občanskoprávních smluv (kupní smlouvy, smlouvy o dílo, nájemní smlouvy apod.)</li>
+                        <li>problematika náhrada škody a bezdůvodného obohacení</li>
+                        <li>řešení sporů z občanskoprávních vztahů soudní i mimosoudní cestou zajištění závazků</li>
+                        <li>vymáhání pohledávek z občanskoprávních závazkových vztahů</li>
+                        <li>ochrana osobnosti (zejména vymáhání peněžitého zadostiučinění)</li>
+                    </ul>
+                    
+                    <h3>Dědické právo</h3>
+                    <ul>
+                        <li>pomoc při sepisu závěti, listin o vydědění a dohod dědictví</li>
+                        <li>zastupování v řízení o dědictví</li>
+                    </ul>
+                    
+                    <h3>Exekuce a veřejné dražby</h3>
+                    <ul>
+                        <li>zastupování v exekučním řízení (návrhy na exekuce, obrana před exekucí)</li>
+                        <li>problematika veřejných dražeb</li>
+                    </ul>
+                    
+                    <p>Více viz. <a class="service-link" onclick="openServiceModal('nemovitosti')">Nemovitosti</a></p>
+                `,
+                'obchodni-pravo': `
+                    <h2>Obchodní právo</h2>
+                    <ul>
+                        <li>zakládání a transformace obchodních společností</li>
+                        <li>právní poradenství pro podnikatele a společnosti</li>
+                        <li>obchodní smlouvy (kupní, dodavatelské, distribuce, franchising)</li>
+                        <li>ochrana hospodářské soutěže</li>
+                        <li>fúze a akvizice společností</li>
+                        <li>likvidace společností</li>
+                        <li>právo obchodních korporací (vztahy mezi společníky, valné hromady)</li>
+                        <li>řešení obchodněprávních sporů</li>
+                        <li>insolvence a reorganizace společností</li>
+                    </ul>
+                `,
+                'nemovitosti': `
+                    <h2>Nemovitosti</h2>
+                    <ul>
+                        <li>příprava smluv o převodech nemovitostí a bytů</li>
+                        <li>převody členství v bytových družstvech</li>
+                        <li>vypracování návrhů na zápis práv do katastru nemovitostí</li>
+                        <li>zastupování v řízení před katastrálním úřadem</li>
+                        <li>zástavní práva a věcná břemena k nemovitostem</li>
+                        <li>bytové právo - nájem a podnájem bytů - smlouvy, výpovědi z nájmu</li>
+                        <li>vypořádání bydlení v souvislosti s rozvodem</li>
+                        <li>zakládání společenství vlastníků jednotek a bytových družstev, zpracování jejich stanov</li>
+                        <li>nebytové prostory - smlouvy o nájmu a podnájmu</li>
+                        <li>řešení sporů souvisejících s vlastnictvím a nájmem nemovitostí, bytů a nebytových prostor (žaloby o určení vlastnického práva, žaloby na ochranu vlastnického práva, spory o platnost nájemních smluv, spory týkající se skončení nájemních vztahů apod.)</li>
+                    </ul>
+                `,
+                'pracovni-pravo': `
+                    <h2>Pracovní právo</h2>
+                    <ul>
+                        <li>příprava a konzultace pracovních smluv</li>
+                        <li>konzultace pracovněprávních úkonů zaměstnavatele (jmenování a odvolávání vedoucích zaměstnanců, rozvázání pracovního poměru apod.)</li>
+                        <li>manažerské smlouvy</li>
+                        <li>náhrada škody v pracovněprávních vztazích - dohody o hmotné odpovědnosti</li>
+                        <li>zpracování interních pracovněprávních dokumentů zaměstnavatele (pracovní řády, prémiové řády apod.)</li>
+                        <li>zastupování v pracovněprávních sporech</li>
+                    </ul>
+                `,
+                'dusevni-vlastnictvi': `
+                    <h2>Právo duševního vlastnictví</h2>
+                    <ul>
+                        <li>autorské právo a práva související s právem autorským</li>
+                        <li>průmyslová práva (patenty, užitné vzory, průmyslové vzory)</li>
+                        <li>ochranné známky - registrace, převody, licence, ochrana před neoprávněnými zásahy</li>
+                        <li>zastoupení v řízení před Úřadem průmyslového vlastnictví</li>
+                        <li>soudní spory související s duševním vlastnictvím</li>
+                    </ul>
+                `,
+                'vymahani': `
+                    <h2>Vymáhání pohledávek</h2>
+                    <ul>
+                        <li>vymáhání pohledávek cestou soudního, rozhodčího řízení</li>
+                        <li>mimosoudní vymáhání pohledávek (vyjednání a zpracování dohod o splácení dluhu)</li>
+                        <li>zprostředkování odprodeje a odkupu pohledávek</li>
+                        <li>zajištění pohledávek (zástavní práva, směnky, zajišťovací převody práv)</li>
+                        <li>vymáhání pohledávek v rámci exekuce</li>
+                        <li>evidence a správa pohledávek věřitelů</li>
+                        <li>uplatňování pohledávek v insolvenčním řízení</li>
+                    </ul>
+                `,
+                'stavebni-pravo': `
+                    <h2>Stavební právo</h2>
+                    <ul>
+                        <li>zastupování v řízení před stavebními úřady</li>
+                    </ul>
+                `,
+                'pojistovaci-pravo': `
+                    <h2>Pojišťovací právo</h2>
+                    <ul>
+                        <li>konzultace pojistných smluv</li>
+                        <li>uplatňování práv z pojistné smlouvy</li>
+                        <li>řešení sporů z pojistných smluv</li>
+                        <li>právní servis poskytovaný pojšťovacím zprostředkovatelům</li>
+                    </ul>
+                `,
+                'trestni-pravo': `
+                    <h2>Trestní právo</h2>
+                    <ul>
+                        <li>obhajoba obviněného v trestním řízení</li>
+                        <li>zastupování poškozeného v trestním řízení při vymáhání náhrady škody způsobené trestným činem</li>
+                        <li>zpracování trestních oznámení</li>
+                        <li>poradenství podnikatelům a členům orgánů obchodních korporací při jejich činnosti za účelem prevence trestní odpovědnosti</li>
+                    </ul>
+                `,
+                'insolvencni-pravo': `
+                    <h2>Insolvenční právo</h2>
+                    <ul>
+                        <li>insolvenční návrhy</li>
+                        <li>přihlášky pohledávek do insolvenčního řízení</li>
+                        <li>zastupování věřitelů v insolvenčním řízení</li>
+                        <li>zastoupení v incidenčních sporech</li>
+                    </ul>
+                `,
+                'rozvody': `
+                    <h2>Rozvody a vypořádání společného jmění</h2>
+                    <ul>
+                        <li>rozvody</li>
+                        <li>soudní i mimosoudní vypořádání společného jmění</li>
+                        <li>úprava rozsahu společného jmění</li>
+                    </ul>
+                `
+            };
+            
+            return services[serviceId] || '<h2>Služba nenalezena</h2><p>Požadovaná služba není k dispozici.</p>';
+        }
+        
+        window.onclick = function(event) {
+            const modal = document.getElementById('serviceModal');
+            if (event.target === modal) {
+                closeServiceModal();
+            }
+        }
+    </script>
 </body>
 </html>

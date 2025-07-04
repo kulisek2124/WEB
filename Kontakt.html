@@ -17,7 +17,22 @@
                 <ul>
                     <li><a href="index.html">Domů</a></li>
                     <li><a href="onas.html">O nás</a></li>
-                    <li><a href="pravni-sluzby.html">Právní služby</a></li>
+                    <li class="services-dropdown">
+                        <a href="pravni-sluzby.html">Právní služby</a>
+                        <div class="dropdown">
+                            <a class="service-link" onclick="openServiceModal('obcanske-pravo')">Občanské právo</a>
+                            <a class="service-link" onclick="openServiceModal('obchodni-pravo')">Obchodní právo</a>
+                            <a class="service-link" onclick="openServiceModal('nemovitosti')">Nemovitosti</a>
+                            <a class="service-link" onclick="openServiceModal('pracovni-pravo')">Pracovní právo</a>
+                            <a class="service-link" onclick="openServiceModal('dusevni-vlastnictvi')">Právo duševního vlastnictví</a>
+                            <a class="service-link" onclick="openServiceModal('vymahani')">Vymáhání pohledávek</a>
+                            <a class="service-link" onclick="openServiceModal('stavebni-pravo')">Stavební právo</a>
+                            <a class="service-link" onclick="openServiceModal('pojistovaci-pravo')">Pojišťovací právo</a>
+                            <a class="service-link" onclick="openServiceModal('trestni-pravo')">Trestní právo</a>
+                            <a class="service-link" onclick="openServiceModal('insolvencni-pravo')">Insolvenční právo</a>
+                            <a class="service-link" onclick="openServiceModal('rozvody')">Rozvody a vypořádání</a>
+                        </div>
+                    </li>
                     <li><a href="kontakt.html">Kontakt</a></li>
                     <li><a href="cenik.html">Ceník</a></li>
                 </ul>
@@ -42,6 +57,10 @@
                     <p>708 00 Ostrava - Poruba</p>
                 </div>
             </div>
+            
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2568.5860373891385!2d18.16134997699218!3d49.9367473714712!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4713f9c1c2a1e30f%3A0x28f4d4c9b8d3f1f1!2sSlav%C3%ADkova%206068%2F18%2C%20708%2000%20Ostrava-Poruba!5e0!3m2!1scs!2scz!4v1690280328005!5m2!1scs!2scz" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
         </section>
     </main>
 
@@ -50,5 +69,88 @@
             <p>Tvorba webových stránek, Redakční systém & Webdesign SUITU websites SE, © 2025</p>
         </div>
     </footer>
+
+    <!-- Modální okno pro služby -->
+    <div id="serviceModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeServiceModal()">&times;</span>
+            <div class="service-details" id="serviceDetails">
+                <!-- Obsah se naplní dynamicky -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funkce pro otevření modálního okna služby
+        function openServiceModal(serviceId) {
+            // Získat obsah služby
+            const serviceContent = getServiceContent(serviceId);
+            
+            // Naplnit modální okno obsahem
+            document.getElementById('serviceDetails').innerHTML = serviceContent;
+            
+            // Zobrazit modální okno
+            document.getElementById('serviceModal').style.display = 'flex';
+        }
+        
+        // Funkce pro zavření modálního okna
+        function closeServiceModal() {
+            document.getElementById('serviceModal').style.display = 'none';
+        }
+        
+        // Obsah služeb
+        function getServiceContent(serviceId) {
+            const services = {
+                'obcanske-pravo': `
+                    <h2>Občanské právo</h2>
+                    <h3>Vlastnické právo, zástavní právo, věcná břemena</h3>
+                    <ul>
+                        <li>převody vlastnického práva (nemovitosti, byty, podíly)</li>
+                        <li>soudní ochrana vlastnického práva</li>
+                        <li>zrušení a vypořádání spoluvlastnictví</li>
+                        <li>vypořádání společného jmění manželů v souvislosti s rozvodem</li>
+                        <li>soudní spory o vlastnictví</li>
+                        <li>problematika věcných břemen</li>
+                        <li>zástavní právo</li>
+                    </ul>
+                    
+                    <h3>Občanskoprávní závazky</h3>
+                    <ul>
+                        <li>sepis a konzultace občanskoprávních smluv (kupní smlouvy, smlouvy o dílo, nájemní smlouvy apod.)</li>
+                        <li>problematika náhrady škody a bezdůvodného obohacení</li>
+                        <li>řešení sporů z občanskoprávních vztahů soudní i mimosoudní cestou zajištění závazků</li>
+                        <li>vymáhání pohledávek z občanskoprávních závazkových vztahů</li>
+                        <li>ochrana osobnosti (zejména vymáhání peněžitého zadostiučinění)</li>
+                    </ul>
+                    
+                    <h3>Dědické právo</h3>
+                    <ul>
+                        <li>pomoc při sepisu závěti, listin o vydědění a dohod dědictví</li>
+                        <li>zastupování v řízení o dědictví</li>
+                    </ul>
+                    
+                    <h3>Exekuce a veřejné dražby</h3>
+                    <ul>
+                        <li>zastupování v exekučním řízení (návrhy na exekuce, obrana před exekucí)</li>
+                        <li>problematika veřejných dražeb</li>
+                    </ul>
+                    
+                    <p>Více viz. <a class="service-link" onclick="openServiceModal('nemovitosti')">Nemovitosti</a></p>
+                `,
+                
+                // ... (další služby stejně jako v index.html) ...
+            };
+            
+            return services[serviceId] || '<h2>Služba nenalezena</h2><p>Požadovaná služba není k dispozici.</p>';
+        }
+        
+        // Zavření modálního okna při kliknutí mimo obsah
+        window.onclick = function(event) {
+            const modal = document.getElementById('serviceModal');
+            if (event.target === modal) {
+                closeServiceModal();
+            }
+        }
+    </script>
 </body>
 </html>
