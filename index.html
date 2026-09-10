@@ -1,533 +1,1037 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advokátní kancelář Mgr. Ondřej Mičaník</title>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #8e6c4d;
-            --accent: #b5651d;
-            --light: #f5f0e6;
-            --dark: #1a1a1a;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Georgia', serif;
-            line-height: 1.8;
-            color: var(--dark);
-            background-color: var(--light);
-            font-size: 18px;
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
-        header {
-            background-color: var(--primary);
-            color: white;
-            padding: 1.5rem 0;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .header-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        
-        .logo h1 {
-            font-size: 1.2rem;
-            font-weight: normal;
-            margin-top: 0.3rem;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        nav ul li {
-            margin: 0 1rem;
-        }
-        
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 0.5rem 0;
-            position: relative;
-            transition: color 0.3s;
-        }
-        
-        nav ul li a:hover {
-            color: var(--accent);
-        }
-        
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--accent);
-            transition: width 0.3s;
-        }
-        
-        nav ul li a:hover::after {
-            width: 100%;
-        }
-        
-        .services-dropdown {
-            position: relative;
-        }
-        
-        .dropdown {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: white;
-            min-width: 250px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            z-index: 100;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        
-        .services-dropdown:hover .dropdown {
-            display: block;
-        }
-        
-        .dropdown a {
-            color: var(--dark);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-            transition: background 0.3s;
-        }
-        
-        .dropdown a:hover {
-            background-color: var(--light);
-            color: var(--accent);
-        }
-        
-        .hero {
-            text-align: center;
-            padding: 4rem 1rem;
-            margin: 2rem 0;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://via.placeholder.com/1200x600?text=Právní+Poradenství');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            border-radius: 5px;
-        }
-        
-        .hero h1 {
-            font-size: 2.8rem;
-            margin-bottom: 1rem;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-        }
-        
-        .hero h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            font-weight: normal;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-        }
-        
-        .content-section {
-            padding: 3rem 0;
-        }
-        
-        .content-section h2 {
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--secondary);
-            font-size: 2.2rem;
-        }
-        
-        .content-section p {
-            margin-bottom: 1.2rem;
-            text-align: justify;
-        }
-        
-        footer {
-            background-color: var(--dark);
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
-            font-size: 0.9rem;
-        }
-        
-        footer p {
-            margin-bottom: 0.5rem;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            overflow-y: auto;
-        }
-        
-        .modal-content {
-            background-color: white;
-            padding: 40px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 900px;
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
-            line-height: 1.8;
-            font-size: 18px;
-        }
-        
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #333;
-            transition: color 0.3s;
-        }
-        
-        .close:hover {
-            color: var(--accent);
-        }
-        
-        .service-details h2 {
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-            font-size: 2.2rem;
-            border-bottom: 2px solid var(--secondary);
-            padding-bottom: 10px;
-        }
-        
-        .service-details h3 {
-            color: var(--primary);
-            margin: 2rem 0 1rem;
-            font-size: 1.6rem;
-        }
-        
-        .service-details ul {
-            padding-left: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .service-details li {
-            margin-bottom: 0.8rem;
-            position: relative;
-            padding-left: 1.5rem;
-        }
-        
-        .service-details li::before {
-            content: "•";
-            color: var(--accent);
-            font-weight: bold;
-            display: inline-block;
-            width: 1em;
-            margin-left: -1.5rem;
-            position: absolute;
-            left: 0;
-        }
-        
-        @media (max-width: 768px) {
-            nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            nav ul li {
-                margin: 0.5rem 0;
-            }
-            
-            .hero {
-                padding: 2.5rem 1rem;
-            }
-            
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-            
-            .hero h2 {
-                font-size: 1.5rem;
-            }
-            
-            .content-section h2 {
-                font-size: 1.8rem;
-            }
-            
-            .services-dropdown .dropdown {
-                position: static;
-                min-width: 100%;
-            }
-            
-            .modal-content {
-                padding: 20px;
-            }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Advokátní kancelář Mgr. Ondřej Mičaník | advokát Ostrava-Poruba</title>
+<meta name="description" content="Advokát v Ostravě-Porubě pro podnikatele i občany: obchodní a občanské právo, nemovitosti, vymáhání pohledávek, pracovní, trestní a insolvenční právo, rozvody. Objednejte se na konzultaci online nebo na 604 321 443.">
+<link rel="canonical" href="https://www.micanik-advokat.cz/">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="geo.region" content="CZ-80"><meta name="geo.placename" content="Ostrava-Poruba">
+<meta name="theme-color" content="#FAF7F1">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:site_name" content="Advokátní kancelář Mgr. Ondřej Mičaník">
+<meta property="og:title" content="Advokátní kancelář Mgr. Ondřej Mičaník — advokát Ostrava-Poruba">
+<meta property="og:description" content="Právní pomoc pro podnikatele i občany. Objednejte se na konzultaci online nebo zavolejte 604 321 443.">
+<meta property="og:url" content="https://www.micanik-advokat.cz/">
+<meta property="og:image" content="https://www.micanik-advokat.cz/og-image.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Advokátní kancelář Mgr. Ondřej Mičaník, Ostrava-Poruba">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Advokátní kancelář Mgr. Ondřej Mičaník — advokát Ostrava-Poruba">
+<meta name="twitter:description" content="Právní pomoc pro podnikatele i občany v Ostravě. Objednání konzultace online.">
+<meta name="twitter:image" content="https://www.micanik-advokat.cz/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<script type="application/ld+json">
+[
+ {
+  "@context": "https://schema.org",
+  "@type": "LegalService",
+  "@id": "https://www.micanik-advokat.cz/#kancelar",
+  "name": "Advokátní kancelář Mgr. Ondřej Mičaník",
+  "alternateName": "Mgr. Ondřej Mičaník, advokát",
+  "description": "Advokátní kancelář v Ostravě-Porubě poskytující právní služby podnikatelům i občanům: obchodní a občanské právo, nemovitosti, vymáhání pohledávek, pracovní, trestní a insolvenční právo, rozvody.",
+  "url": "https://www.micanik-advokat.cz/",
+  "telephone": "+420604321443",
+  "email": "micanik.advokat@email.cz",
+  "image": "https://www.micanik-advokat.cz/og-image.png",
+  "logo": "https://www.micanik-advokat.cz/favicon.svg",
+  "address": {
+   "@type": "PostalAddress",
+   "streetAddress": "Slavíkova 6068/18",
+   "addressLocality": "Ostrava-Poruba",
+   "addressRegion": "Moravskoslezský kraj",
+   "postalCode": "708 00",
+   "addressCountry": "CZ"
+  },
+  "areaServed": [
+   {
+    "@type": "City",
+    "name": "Ostrava"
+   },
+   {
+    "@type": "AdministrativeArea",
+    "name": "Moravskoslezský kraj"
+   }
+  ],
+  "founder": {
+   "@type": "Person",
+   "name": "Mgr. Ondřej Mičaník",
+   "jobTitle": "advokát",
+   "memberOf": {
+    "@type": "Organization",
+    "name": "Česká advokátní komora",
+    "url": "https://www.cak.cz"
+   }
+  },
+  "knowsAbout": [
+   "Obchodní právo",
+   "Občanské právo",
+   "Nemovitosti",
+   "Pracovní právo",
+   "Právo duševního vlastnictví",
+   "Vymáhání pohledávek",
+   "Stavební právo",
+   "Pojišťovací právo",
+   "Trestní právo",
+   "Insolvenční právo",
+   "Rozvody a vypořádání společného jmění"
+  ],
+  "knowsLanguage": "cs",
+  "priceRange": "dle dohody",
+  "hasOfferCatalog": {
+   "@type": "OfferCatalog",
+   "name": "Právní služby",
+   "itemListElement": [
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "name": "Obchodní právo",
+      "provider": {
+       "@id": "https://www.micanik-advokat.cz/#kancelar"
+      }
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "name": "Občanské právo",
+      "provider": {
+       "@id": "https://www.micanik-advokat.cz/#kancelar"
+      }
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "name": "Nemovitosti",
+      "provider": {
+       "@id": "https://www.micanik-advokat.cz/#kancelar"
+      }
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "name": "Pracovní právo",
+      "provider": {
+       "@id": "https://www.micanik-advokat.cz/#kancelar"
+      }
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "name": "Právo duševního vlastnictví",
+      "provider": {
+       "@id": "https://www.micanik-advokat.cz/#kancelar"
+      }
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "name": "Vymáhání pohledávek",
+      "provider": {
+       "@id": "https://www.micanik-advokat.cz/#kancelar"
+      }
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "name": "Stavební právo",
+      "provider": {
+       "@id": "https://www.micanik-advokat.cz/#kancelar"
+      }
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "name": "Pojišťovací právo",
+      "provider": {
+       "@id": "https://www.micanik-advokat.cz/#kancelar"
+      }
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "name": "Trestní právo",
+      "provider": {
+       "@id": "https://www.micanik-advokat.cz/#kancelar"
+      }
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "name": "Insolvenční právo",
+      "provider": {
+       "@id": "https://www.micanik-advokat.cz/#kancelar"
+      }
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "name": "Rozvody a vypořádání společného jmění",
+      "provider": {
+       "@id": "https://www.micanik-advokat.cz/#kancelar"
+      }
+     }
+    }
+   ]
+  },
+  "potentialAction": {
+   "@type": "ReserveAction",
+   "name": "Objednat se na konzultaci",
+   "target": "https://www.micanik-advokat.cz/#rezervace"
+  }
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+   {
+    "@type": "Question",
+    "name": "Kolik stojí konzultace nebo právní služba?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Odměna se ve většině případů sjednává dohodou předem podle právní a časové náročnosti věci — hodinově, pevnou částkou za vyřízení věci, nebo paušálně pro firmy. Cenu se dozvíte dřív, než začneme. Není-li odměna dohodnuta, řídí se advokátním tarifem (vyhláška č. 177/1996 Sb.). Vedle odměny se účtují hotové výdaje, například soudní poplatky."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Jak se objednat na schůzku?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Nejrychleji přes kalendář na této stránce — vyberete den a čas a vyplníte kontakt. Objednat se můžete také telefonicky na čísle 604 321 443 nebo e-mailem na micanik.advokat@email.cz. Termín vždy potvrdíme."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Kde kancelář sídlí?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Na adrese Slavíkova 6068/18, 708 00 Ostrava-Poruba. Osobní schůzky domlouváme předem, aby se vám advokát mohl plně věnovat."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Co si vzít na první schůzku?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Všechny dokumenty, které se vaší věci týkají — smlouvy, dopisy, výzvy, rozhodnutí úřadů nebo soudů. Pokud jednáte za firmu, přineste i doklad o tom, že jste oprávněni za ni jednat. Na místě společně probereme, jaké kroky dávají smysl."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Pro koho jsou právní služby určeny?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Pro podnikatele i občany. Kancelář se věnuje obchodnímu a občanskému právu, nemovitostem, pracovnímu právu, právu duševního vlastnictví, vymáhání pohledávek, stavebnímu, pojišťovacímu, trestnímu a insolvenčnímu právu a rozvodům s vypořádáním společného jmění."
+    }
+   }
+  ]
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": "https://www.micanik-advokat.cz/",
+  "name": "Advokátní kancelář Mgr. Ondřej Mičaník",
+  "inLanguage": "cs"
+ }
+]
+</script>
+<style>
+  /* Jediné, záměrně světlé téma — stránka vypadá stejně bez ohledu na nastavení prohlížeče. */
+  :root{
+    --ink:#2B2A28; --ink-2:#4B4946; --mute:#726D66; --line:#E2DACE; --line-2:#EEE8DE;
+    --ground:#FAF7F1; --paper:#FFFFFF; --wash:#F4EFE6;
+    --accent:#8A3B3B; --accent-dark:#6F2E2E; --accent-soft:#F6E9E6; --on-accent:#FFFFFF;
+    --ok:#2E7D4F; --ok-soft:#E4F2E8; --warn:#8F5B0F; --warn-soft:#F8ECD3; --bad:#A03A3A; --bad-soft:#F6E3E1;
+    --shadow:0 14px 34px -20px rgba(60,40,20,.28);
+    --f-display:"Libre Caslon Text",Georgia,"Times New Roman",serif;
+    --f-body:"Source Sans 3","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --r:8px; --gutter:clamp(18px,5vw,64px); --max:1140px;
+    color-scheme:light only;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{font-family:var(--f-display);font-weight:400;line-height:1.15;margin:0;text-wrap:balance}
+  h1{font-size:clamp(36px,5vw,58px)}
+  h2{font-size:clamp(30px,3.6vw,42px)}
+  h3{font-size:clamp(22px,2vw,26px)}
+  p{margin:0}
+  a{color:var(--accent)}
+  button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+  input,select,textarea{font:inherit;font-size:18px;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:var(--r);padding:12px 14px;width:100%}
+  input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:3px solid #C99A6B;outline-offset:2px}
+  .label{font-size:16px;font-weight:600;color:var(--accent);letter-spacing:.01em}
+  .wrap{max-width:var(--max);margin:0 auto;padding-inline:var(--gutter)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 26px;border-radius:var(--r);font-weight:600;font-size:18px;border:1.5px solid var(--ink);color:var(--ink);background:var(--paper);text-decoration:none;white-space:nowrap;transition:transform .2s ease,background .2s,color .2s,box-shadow .2s}
+  .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+  .btn.primary:hover{background:var(--accent-dark)}
+  .btn.quiet{border-color:var(--line);background:var(--paper)}
+  .btn.small{padding:10px 18px;font-size:16px}
+  .btn[disabled]{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* ---------- HLAVIČKA ---------- */
+  .nav{position:sticky;top:0;z-index:20;background:rgba(250,247,241,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;height:80px}
+  .brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink)}
+  .brand .mark{width:44px;height:44px;border:2px solid var(--accent);border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);color:var(--accent);font-size:22px;flex:none}
+  .brand b{font-family:var(--f-display);font-weight:400;font-size:20px;display:block;line-height:1.1;white-space:nowrap}
+  .brand small{display:block;font-size:14px;color:var(--mute);margin-top:2px;white-space:nowrap}
+  .links{display:flex;gap:22px;align-items:center}
+  .links a{white-space:nowrap;text-decoration:none;font-size:16px;font-weight:600;color:var(--ink-2);padding:6px 0;border-bottom:2px solid transparent;transition:border-color .2s,color .2s}
+  .links a:hover{color:var(--accent);border-color:var(--accent)}
+  .links a.lock{font-weight:400;color:var(--mute);display:inline-flex;align-items:center;gap:6px;font-size:15px}
+  .navcta{display:flex;gap:14px;align-items:center}
+  .navcta .phone{text-decoration:none;color:var(--ink);font-weight:600;font-size:17px;white-space:nowrap}
+  .burger{display:none;width:46px;height:46px;border:1.5px solid var(--line);border-radius:var(--r);background:var(--paper)}
+  .burger span{display:block;width:20px;height:2px;background:var(--ink);margin:4px auto}
+  @media (max-width:1140px){
+    .links{display:none}
+    .burger{display:block}
+    .navcta .phone,.navcta .btn{display:none}
+    .nav.open .links{display:flex;position:absolute;left:0;right:0;top:80px;background:var(--paper);flex-direction:column;align-items:flex-start;padding:18px var(--gutter) 24px;border-bottom:1px solid var(--line);gap:16px;box-shadow:var(--shadow)}
+    .nav.open .links a{font-size:19px}
+  }
+
+  /* ---------- ÚVOD ---------- */
+  .hero{padding-block:clamp(44px,7vw,92px) clamp(36px,5vw,64px)}
+  .hero .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(28px,5vw,72px);align-items:start}
+  .hero h1{animation:fade .8s ease both}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero .lead{max-width:58ch;font-size:clamp(18px,1.5vw,21px);color:var(--ink-2);margin-top:24px;animation:fade .8s .15s both}
+  .hero .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px;animation:fade .8s .3s both}
+  .hero .label{margin-bottom:18px;display:block;animation:fade .8s both}
+  .points{list-style:none;padding:0;margin:40px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;animation:fade .8s .45s both}
+  .points li{display:flex;gap:12px;align-items:flex-start;font-size:17px;color:var(--ink-2);line-height:1.4}
+  .points svg{flex:none;width:26px;height:26px;color:var(--ok);margin-top:1px}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media (max-width:980px){.hero .wrap{grid-template-columns:1fr}.points{grid-template-columns:1fr;gap:10px}}
+
+  .slip{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px 26px 22px;box-shadow:var(--shadow);animation:fade .8s .3s both;border-top:5px solid var(--accent)}
+  .slip h3{font-size:24px}
+  .slip .sub{color:var(--mute);font-size:16px;margin-top:6px}
+  .slots{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:10px}
+  .slots li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border:1.5px solid var(--line-2);border-radius:10px;background:var(--ground);transition:border-color .2s}
+  .slots li:hover{border-color:var(--accent)}
+  .slots .d b{font-weight:600;display:block;font-size:17px}
+  .slots .d span{color:var(--mute);font-size:16px}
+  .slots .go{color:var(--accent);font-weight:600;font-size:16px;white-space:nowrap;border-bottom:1.5px solid transparent}
+  .slots .go:hover{border-color:var(--accent)}
+  .slip .foot{margin-top:16px;font-size:15px;color:var(--mute);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+
+  /* ---------- SEKCE ---------- */
+  section.block{padding-block:clamp(56px,7vw,100px);border-top:1px solid var(--line-2);scroll-margin-top:80px}
+  section.block.paper{background:var(--paper)}
+  .head{max-width:760px;margin:0 auto clamp(30px,4vw,52px);text-align:center}
+  .head .label{display:block;margin-bottom:12px}
+  .head p{color:var(--ink-2);font-size:19px;margin-top:16px}
+  .reveal.in{animation:reveal .7s ease both}
+  @keyframes reveal{from{opacity:.001;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  /* o kanceláři */
+  .about{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(28px,5vw,64px);align-items:start}
+  .about .text p+p{margin-top:20px}
+  .about .text{font-size:19px;color:var(--ink-2);max-width:62ch}
+  .list-card{background:var(--ground);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+  .list-card+.list-card{margin-top:18px}
+  .list-card h4{font-family:var(--f-body);font-weight:700;font-size:17px;color:var(--accent);margin-bottom:10px}
+  .list-card ul{list-style:none;margin:0;padding:0}
+  .list-card li{padding:8px 0 8px 28px;border-bottom:1px solid var(--line-2);font-size:17px;position:relative}
+  .list-card li:last-child{border-bottom:0}
+  .list-card li::before{content:"";position:absolute;left:4px;top:17px;width:10px;height:10px;border-radius:50%;background:var(--ok)}
+  @media (max-width:980px){.about{grid-template-columns:1fr}}
+
+  /* služby */
+  .svc{border-top:1.5px solid var(--line);max-width:920px;margin:0 auto}
+  .svc-row{border-bottom:1.5px solid var(--line)}
+  .svc-row>button{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:18px;align-items:center;text-align:left;padding:22px 4px}
+  .svc-row>button:hover h3,.svc-row.open h3{color:var(--accent)}
+  .svc-row .count{font-size:16px;color:var(--mute);white-space:nowrap}
+  .svc-row .plus{width:36px;height:36px;border:1.5px solid var(--line);border-radius:50%;display:grid;place-items:center;position:relative;transition:transform .3s ease,border-color .2s,background .2s;background:var(--paper)}
+  .svc-row .plus::before,.svc-row .plus::after{content:"";position:absolute;background:var(--ink);width:14px;height:2px;border-radius:2px}
+  .svc-row .plus::after{transform:rotate(90deg)}
+  .svc-row.open .plus{transform:rotate(45deg);border-color:var(--accent);background:var(--accent-soft)}
+  .svc-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s ease}
+  .svc-row.open .svc-body{grid-template-rows:1fr}
+  .svc-body>div{overflow:hidden}
+  .svc-inner{padding:0 4px 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px 36px}
+  .svc-inner h4{font-family:var(--f-body);font-weight:700;font-size:17px;margin-bottom:8px;color:var(--ink)}
+  .svc-inner ul{margin:0;padding-left:22px;color:var(--ink-2);font-size:17px}
+  .svc-inner li{margin:6px 0}
+  .svc-inner .book{grid-column:1/-1;margin-top:8px}
+
+  /* odměna */
+  .fees{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+  .fee{background:var(--ground);border:1px solid var(--line);border-radius:14px;padding:28px 26px 30px;position:relative}
+  .fee .label{display:block;margin-bottom:12px}
+  .fee h3{margin-bottom:12px}
+  .fee p{color:var(--ink-2);font-size:17px}
+  .fee .tag{position:absolute;top:18px;right:18px;font-size:14px;font-weight:600;padding:4px 10px;background:var(--accent-soft);color:var(--accent);border-radius:20px}
+  .fine{margin:28px auto 0;color:var(--mute);font-size:16px;max-width:80ch;text-align:center}
+  .fine b{color:var(--ink);font-weight:600}
+  @media (max-width:900px){.fees{grid-template-columns:1fr}}
+
+  /* rezervace */
+  .book-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,48px);align-items:start}
+  @media (max-width:980px){.book-grid{grid-template-columns:1fr}}
+  .cal{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .cal-head h3{font-size:24px;text-transform:capitalize}
+  .cal-nav{display:flex;gap:8px}
+  .cal-nav button{width:42px;height:42px;border:1.5px solid var(--line);border-radius:var(--r);display:grid;place-items:center;font-size:22px;background:var(--paper);transition:border-color .2s}
+  .cal-nav button:hover{border-color:var(--ink)}
+  .dow{display:grid;grid-template-columns:repeat(7,1fr);font-size:14px;font-weight:600;color:var(--mute);text-align:center;margin-bottom:8px}
+  .days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .day{aspect-ratio:1;border-radius:var(--r);display:grid;place-items:center;font-size:17px;position:relative;color:#B3ACA2;transition:background .2s,color .2s,transform .2s;font-weight:600}
+  .day.pad{visibility:hidden}
+  .day.has{color:var(--ok);background:var(--ok-soft);border:1.5px solid #BFE0CB;cursor:pointer}
+  .day.has:hover{border-color:var(--ok);transform:translateY(-1px)}
+  .day.sel{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+  .day.today::after{content:"";position:absolute;bottom:5px;width:5px;height:5px;border-radius:50%;background:currentColor}
+  .legend{display:flex;gap:18px;margin-top:16px;font-size:15px;color:var(--mute);flex-wrap:wrap}
+  .legend i{display:inline-block;width:14px;height:14px;border-radius:4px;background:var(--ok-soft);border:1.5px solid #BFE0CB;margin-right:8px;vertical-align:-2px}
+  .times{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  .time{font-size:18px;font-weight:600;padding:12px 18px;border:1.5px solid var(--line);border-radius:var(--r);background:var(--paper);transition:all .2s}
+  .time:hover{border-color:var(--accent)}
+  .time.sel{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+  .time.taken{opacity:.4;text-decoration:line-through;cursor:not-allowed}
+  .form{display:grid;gap:16px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px}
+  .form .label{display:block}
+  .form .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:600px){.form .two{grid-template-columns:1fr}}
+  .form label{display:grid;gap:6px;font-size:16px;font-weight:600;color:var(--ink-2)}
+  .form .pick{font-size:18px;padding:14px 16px;border:1.5px dashed var(--line);border-radius:var(--r);color:var(--mute)}
+  .form .pick.on{border-style:solid;border-color:var(--accent);color:var(--ink);background:var(--accent-soft);font-weight:600}
+  .form .note{font-size:15px;color:var(--mute);font-weight:400}
+  .confirm{background:var(--paper);border:2px solid var(--ok);border-radius:14px;padding:30px;display:grid;gap:12px}
+  .confirm .code{font-size:30px;font-weight:700;letter-spacing:.06em;color:var(--ok)}
+
+  /* kontakt */
+  .contact{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,48px)}
+  @media (max-width:980px){.contact{grid-template-columns:1fr}}
+  .cards{display:grid;gap:14px}
+  .card{background:var(--ground);border:1px solid var(--line);border-radius:14px;padding:22px 24px;display:grid;gap:6px}
+  .card .label{display:block}
+  .card a{text-decoration:none;font-size:22px;font-family:var(--f-display);color:var(--ink)}
+  .card a:hover{color:var(--accent)}
+  .map{background:var(--ground);border:1px solid var(--line);border-radius:14px;min-height:340px;position:relative;overflow:hidden}
+  .map svg{width:100%;height:100%;position:absolute;inset:0}
+  .map .pin{position:absolute;left:58%;top:47%;transform:translate(-50%,-100%);display:grid;justify-items:center;gap:8px}
+  .map .pin i{width:16px;height:16px;background:var(--accent);border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 0 0 6px rgba(138,59,59,.18);animation:pulse 2.6s infinite}
+  .map .pin b{font-size:15px;font-weight:600;background:var(--paper);padding:6px 10px;border:1px solid var(--line);border-radius:6px;white-space:nowrap}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 6px rgba(138,59,59,.18)}50%{box-shadow:0 0 0 14px rgba(138,59,59,0)}}
+  .map .open{position:absolute;right:14px;bottom:14px}
+
+  footer{border-top:1px solid var(--line);padding-block:40px 48px;color:var(--mute);font-size:15px;background:var(--wash)}
+  footer .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px 56px}
+  footer p+p{margin-top:10px}
+  footer b{color:var(--ink);font-weight:600}
+  @media (max-width:900px){footer .wrap{grid-template-columns:1fr}}
+
+  /* ---------- INTRANET ---------- */
+  #intranet{display:none;min-height:100vh;background:var(--ground)}
+  body.intra #site{display:none}
+  body.intra #intranet{display:block}
+  .login{min-height:100vh;display:grid;place-items:center;padding:24px}
+  .login .box{width:min(460px,100%);background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:36px 34px;box-shadow:var(--shadow);display:grid;gap:16px}
+  .pincode{letter-spacing:.4em;font-size:26px;text-align:center;font-weight:700}
+  .login .hint{font-size:15px;color:var(--mute)}
+  .login .err{color:var(--bad);font-size:16px;min-height:1.2em}
+  .app{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+  .side{background:var(--paper);border-right:1px solid var(--line);padding:22px 16px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh}
+  .side .brand{padding:6px 8px 20px}
+  .side nav{display:grid;gap:4px}
+  .side nav button{display:flex;align-items:center;gap:10px;text-align:left;padding:12px 14px;border-radius:var(--r);font-size:17px;font-weight:600;color:var(--ink-2);transition:background .2s}
+  .side nav button:hover{background:var(--wash)}
+  .side nav button.on{background:var(--accent-soft);color:var(--accent)}
+  .side nav button .k{margin-left:auto;font-size:14px;background:var(--accent);color:var(--on-accent);padding:1px 9px;border-radius:12px}
+  .side .bottom{margin-top:auto;display:grid;gap:8px;font-size:15px;color:var(--mute);padding:8px}
+  .main{padding:30px clamp(18px,3vw,44px) 60px}
+  .topbar{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:26px;flex-wrap:wrap}
+  .topbar h2{font-size:32px}
+  .topbar .date{font-size:16px;color:var(--mute)}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-bottom:26px}
+  .tile{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+  .tile .label{display:block;margin-bottom:8px;color:var(--mute);font-weight:600}
+  .tile .n{font-family:var(--f-display);font-size:38px;line-height:1}
+  .tile .n small{display:block;font-size:15px;font-family:var(--f-body);color:var(--mute);margin-top:8px}
+  .tile.alert{border-color:var(--accent);background:#FFFBFA}
+  .tile.alert .label{color:var(--accent)}
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+  .panel+.panel{margin-top:18px}
+  .panel h3{font-size:22px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .panel h3 .sub{font-size:15px;color:var(--mute);font-family:var(--f-body)}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:18px}
+  table{width:100%;border-collapse:collapse;font-size:16px}
+  th{text-align:left;font-weight:700;font-size:14px;color:var(--mute);padding:8px 10px;border-bottom:1.5px solid var(--line)}
+  td{padding:12px 10px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+  td.when{white-space:nowrap;font-weight:600}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr:hover td{background:var(--wash)}
+  .tblwrap{overflow-x:auto}
+  .st{display:inline-flex;align-items:center;gap:7px;font-size:15px;font-weight:600;white-space:nowrap;color:var(--ink-2)}
+  .st::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--mute)}
+  .st.new{color:var(--accent)}.st.new::before{background:var(--accent)}
+  .st.ok{color:var(--ok)}.st.ok::before{background:var(--ok)}
+  .st.warn{color:var(--warn)}.st.warn::before{background:var(--warn)}
+  .st.bad{color:var(--bad)}.st.bad::before{background:var(--bad)}
+  .row-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .link{color:var(--accent);font-size:16px;font-weight:600;text-decoration:none;border-bottom:1.5px solid transparent}
+  .link:hover{border-color:var(--accent)}
+  .muted{color:var(--mute)}
+  .small{font-size:15px}
+  .empty{color:var(--mute);font-size:16px;padding:18px 0}
+  .grid2{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:18px;align-items:start}
+  @media (max-width:1000px){.grid2{grid-template-columns:1fr}}
+  .slotlist{display:grid;gap:10px;margin-top:6px}
+  .slotrow{display:grid;grid-template-columns:76px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border:1.5px solid var(--line-2);border-radius:10px;background:var(--ground)}
+  .slotrow .t{font-size:18px;font-weight:700}
+  .slotrow.free{border-style:dashed;background:var(--paper)}
+  .inline{display:flex;gap:12px;align-items:end;flex-wrap:wrap}
+  .inline label{display:grid;gap:5px;font-size:15px;font-weight:600;color:var(--ink-2)}
+  .inline input,.inline select{width:auto;min-width:130px}
+  .fields{display:grid;gap:14px}
+  .fields label{display:grid;gap:5px;font-size:15px;font-weight:600;color:var(--ink-2)}
+  .fields .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:640px){.fields .two{grid-template-columns:1fr}}
+  .items{display:grid;gap:8px}
+  .item{display:grid;grid-template-columns:minmax(0,1fr) 96px 120px 40px;gap:8px;align-items:center}
+  .item button{width:40px;height:40px;border:1.5px solid var(--line);border-radius:var(--r);font-size:20px;background:var(--paper)}
+  .sum{display:flex;justify-content:flex-end;gap:24px;font-size:18px;margin-top:10px}
+  .notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+  .note-card{background:var(--ground);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:grid;gap:8px;transition:transform .2s,border-color .2s;cursor:pointer}
+  .note-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+  .note-card.pinned{border-left:5px solid var(--accent)}
+  .note-card h4{font-family:var(--f-body);font-weight:700;font-size:17px}
+  .note-card p{font-size:16px;color:var(--ink-2);white-space:pre-wrap}
+  .note-card .meta{display:flex;justify-content:space-between;gap:8px;font-size:14px;color:var(--mute)}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:14px 20px;border-radius:var(--r);font-size:16px;opacity:0;pointer-events:none;transition:all .3s ease;z-index:50;box-shadow:var(--shadow)}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  .invoice-view{background:var(--paper);border:1px solid var(--line);padding:34px;max-width:780px;font-size:16px;border-radius:14px}
+  .invoice-view header{display:flex;justify-content:space-between;gap:24px;border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:20px}
+  .invoice-view h3{font-size:26px}
+  .invoice-view .parties{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:20px}
+  .invoice-view .parties h4{font-family:var(--f-body);font-size:14px;color:var(--mute);margin-bottom:6px;font-weight:700}
+  .invoice-view table td,.invoice-view table th{padding:9px 6px}
+  .invoice-view .total{text-align:right;font-family:var(--f-display);font-size:24px;margin-top:16px}
+  @media (max-width:820px){.app{grid-template-columns:1fr}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center}.side nav{display:flex;flex-wrap:wrap}.side .bottom{margin:0;flex-basis:100%}}
+  @media print{
+    body{background:#fff;color:#000}
+    body.intra .side,.topbar,.no-print,#site{display:none!important}
+    .main{padding:0}
+    .invoice-view{border:0;max-width:none;padding:0}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001s!important;animation-delay:0s!important;transition-duration:.001s!important}
+    html{scroll-behavior:auto}
+  }
+</style>
 </head>
 <body>
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                <div>advokátní kancelář</div>
-                <h1>Mgr. Ondřej Mičaník</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Domů</a></li>
-                    <li><a href="onas.html">O nás</a></li>
-                    <li class="services-dropdown">
-                        <a href="pravni-sluzby.html">Právní služby</a>
-                        <div class="dropdown">
-                            <a class="service-link" onclick="openServiceModal('obcanske-pravo')">Občanské právo</a>
-                            <a class="service-link" onclick="openServiceModal('obchodni-pravo')">Obchodní právo</a>
-                            <a class="service-link" onclick="openServiceModal('nemovitosti')">Nemovitosti</a>
-                            <a class="service-link" onclick="openServiceModal('pracovni-pravo')">Pracovní právo</a>
-                            <a class="service-link" onclick="openServiceModal('dusevni-vlastnictvi')">Právo duševního vlastnictví</a>
-                            <a class="service-link" onclick="openServiceModal('vymahani')">Vymáhání pohledávek</a>
-                            <a class="service-link" onclick="openServiceModal('stavebni-pravo')">Stavební právo</a>
-                            <a class="service-link" onclick="openServiceModal('pojistovaci-pravo')">Pojišťovací právo</a>
-                            <a class="service-link" onclick="openServiceModal('trestni-pravo')">Trestní právo</a>
-                            <a class="service-link" onclick="openServiceModal('insolvencni-pravo')">Insolvenční právo</a>
-                            <a class="service-link" onclick="openServiceModal('rozvody')">Rozvody a vypořádání</a>
-                        </div>
-                    </li>
-                    <li><a href="kontakt.html">Kontakt</a></li>
-                    <li><a href="cenik.html">Ceník</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <main class="container">
-        <section class="hero">
-            <h1>Vítejte na stránkách advokátní kanceláře</h1>
-            <h2>Mgr. Ondřeje Mičaníka</h2>
-        </section>
-
-        <section class="content-section">
-            <p>Advokátní kancelář se zaměřuje na poskytování <strong>právních služeb</strong> podnikatelům i občanům v základních právních odvětvích, zejména v oblasti práva obchodního, občanského, trestního, pracovního, správního, práva duševního vlastnictví a dalších. <strong>Právní služby</strong> pokrývají potřeby vznikající jak při podnikatelské činnosti, tak i v běžném životě klientů. Přístup k řešení právních problémů klientů je založen na důkladném poznání jejich potřeb. Služby jsou klientům poskytovány s cílem nalezení optimálního řešení jejich právních problémů.</p>
-            
-            <p>Klientům je zajišťován komplexní servis, v případě potřeby ve spolupráci s odborníky z příbuzných oborů, zejména notáři, účetními, daňovými poradci, patentovými zástupci, exekutory, znalci a tlumočníky. Tato úzká spolupráce umožňuje zhodnotit všechny aspekty případu a nabídnout nejlepší řešení.</p>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>Tvorba webových stránek, Ondřej Mičaník</p>
-        </div>
-    </footer>
-
-    <div id="serviceModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeServiceModal()">&times;</span>
-            <div class="service-details" id="serviceDetails"></div>
-        </div>
+<!-- ======================= VEŘEJNÝ WEB ======================= -->
+<div id="site"><main>
+  <header class="nav" id="nav">
+    <div class="wrap">
+      <a class="brand" href="#top">
+        <span class="mark">M</span>
+        <span><b>Mgr. Ondřej Mičaník</b><small>advokátní kancelář, Ostrava</small></span>
+      </a>
+      <nav class="links" id="links">
+        <a href="#kancelar">O kanceláři</a>
+        <a href="#sluzby">Právní služby</a>
+        <a href="#odmena">Odměna</a>
+        <a href="#rezervace">Objednání</a>
+        <a href="#dotazy">Dotazy</a>
+        <a href="#kontakt">Kontakt</a>
+        <a class="lock" href="#intranet"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Pro kancelář</a>
+      </nav>
+      <div class="navcta">
+        <a class="phone" href="tel:+420604321443">604 321 443</a>
+        <a class="btn primary small" href="#rezervace">Objednat se</a>
+        <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
     </div>
+  </header>
 
-    <script>
-        function openServiceModal(serviceId) {
-            const serviceContent = getServiceContent(serviceId);
-            document.getElementById('serviceDetails').innerHTML = serviceContent;
-            document.getElementById('serviceModal').style.display = 'flex';
-        }
-        
-        function closeServiceModal() {
-            document.getElementById('serviceModal').style.display = 'none';
-        }
-        
-        function getServiceContent(serviceId) {
-            const services = {
-                'obcanske-pravo': `
-                    <h2>Občanské právo</h2>
-                    <h3>Vlastnické právo, zástavní právo, věcná břemena</h3>
-                    <ul>
-                        <li>převody vlastnického práva (nemovitosti, byty, podíly)</li>
-                        <li>soudní ochrana vlastnického práva</li>
-                        <li>zrušení a vypořádání spoluvlastnictví</li>
-                        <li>vypořádání společného jmění manželů v souvislosti s rozvodem</li>
-                        <li>soudní spory o vlastnictví</li>
-                        <li>problematika věcných břemen</li>
-                        <li>zástavní právo</li>
-                    </ul>
-                    
-                    <h3>Občanskoprávní závazky</h3>
-                    <ul>
-                        <li>sepis a konzultace občanskoprávních smluv (kupní smlouvy, smlouvy o dílo, nájemní smlouvy apod.)</li>
-                        <li>problematika náhrada škody a bezdůvodného obohacení</li>
-                        <li>řešení sporů z občanskoprávních vztahů soudní i mimosoudní cestou zajištění závazků</li>
-                        <li>vymáhání pohledávek z občanskoprávních závazkových vztahů</li>
-                        <li>ochrana osobnosti (zejména vymáhání peněžitého zadostiučinění)</li>
-                    </ul>
-                    
-                    <h3>Dědické právo</h3>
-                    <ul>
-                        <li>pomoc při sepisu závěti, listin o vydědění a dohod dědictví</li>
-                        <li>zastupování v řízení o dědictví</li>
-                    </ul>
-                    
-                    <h3>Exekuce a veřejné dražby</h3>
-                    <ul>
-                        <li>zastupování v exekučním řízení (návrhy na exekuce, obrana před exekucí)</li>
-                        <li>problematika veřejných dražeb</li>
-                    </ul>
-                    
-                    <p>Více viz. <a class="service-link" onclick="openServiceModal('nemovitosti')">Nemovitosti</a></p>
-                `,
-                'obchodni-pravo': `
-                    <h2>Obchodní právo</h2>
-                    <ul>
-                        <li>zakládání a transformace obchodních společností</li>
-                        <li>právní poradenství pro podnikatele a společnosti</li>
-                        <li>obchodní smlouvy (kupní, dodavatelské, distribuce, franchising)</li>
-                        <li>ochrana hospodářské soutěže</li>
-                        <li>fúze a akvizice společností</li>
-                        <li>likvidace společností</li>
-                        <li>právo obchodních korporací (vztahy mezi společníky, valné hromady)</li>
-                        <li>řešení obchodněprávních sporů</li>
-                        <li>insolvence a reorganizace společností</li>
-                    </ul>
-                `,
-                'nemovitosti': `
-                    <h2>Nemovitosti</h2>
-                    <ul>
-                        <li>příprava smluv o převodech nemovitostí a bytů</li>
-                        <li>převody členství v bytových družstvech</li>
-                        <li>vypracování návrhů na zápis práv do katastru nemovitostí</li>
-                        <li>zastupování v řízení před katastrálním úřadem</li>
-                        <li>zástavní práva a věcná břemena k nemovitostem</li>
-                        <li>bytové právo - nájem a podnájem bytů - smlouvy, výpovědi z nájmu</li>
-                        <li>vypořádání bydlení v souvislosti s rozvodem</li>
-                        <li>zakládání společenství vlastníků jednotek a bytových družstev, zpracování jejich stanov</li>
-                        <li>nebytové prostory - smlouvy o nájmu a podnájmu</li>
-                        <li>řešení sporů souvisejících s vlastnictvím a nájmem nemovitostí, bytů a nebytových prostor (žaloby o určení vlastnického práva, žaloby na ochranu vlastnického práva, spory o platnost nájemních smluv, spory týkající se skončení nájemních vztahů apod.)</li>
-                    </ul>
-                `,
-                'pracovni-pravo': `
-                    <h2>Pracovní právo</h2>
-                    <ul>
-                        <li>příprava a konzultace pracovních smluv</li>
-                        <li>konzultace pracovněprávních úkonů zaměstnavatele (jmenování a odvolávání vedoucích zaměstnanců, rozvázání pracovního poměru apod.)</li>
-                        <li>manažerské smlouvy</li>
-                        <li>náhrada škody v pracovněprávních vztazích - dohody o hmotné odpovědnosti</li>
-                        <li>zpracování interních pracovněprávních dokumentů zaměstnavatele (pracovní řády, prémiové řády apod.)</li>
-                        <li>zastupování v pracovněprávních sporech</li>
-                    </ul>
-                `,
-                'dusevni-vlastnictvi': `
-                    <h2>Právo duševního vlastnictví</h2>
-                    <ul>
-                        <li>autorské právo a práva související s právem autorským</li>
-                        <li>průmyslová práva (patenty, užitné vzory, průmyslové vzory)</li>
-                        <li>ochranné známky - registrace, převody, licence, ochrana před neoprávněnými zásahy</li>
-                        <li>zastoupení v řízení před Úřadem průmyslového vlastnictví</li>
-                        <li>soudní spory související s duševním vlastnictvím</li>
-                    </ul>
-                `,
-                'vymahani': `
-                    <h2>Vymáhání pohledávek</h2>
-                    <ul>
-                        <li>vymáhání pohledávek cestou soudního, rozhodčího řízení</li>
-                        <li>mimosoudní vymáhání pohledávek (vyjednání a zpracování dohod o splácení dluhu)</li>
-                        <li>zprostředkování odprodeje a odkupu pohledávek</li>
-                        <li>zajištění pohledávek (zástavní práva, směnky, zajišťovací převody práv)</li>
-                        <li>vymáhání pohledávek v rámci exekuce</li>
-                        <li>evidence a správa pohledávek věřitelů</li>
-                        <li>uplatňování pohledávek v insolvenčním řízení</li>
-                    </ul>
-                `,
-                'stavebni-pravo': `
-                    <h2>Stavební právo</h2>
-                    <ul>
-                        <li>zastupování v řízení před stavebními úřady</li>
-                    </ul>
-                `,
-                'pojistovaci-pravo': `
-                    <h2>Pojišťovací právo</h2>
-                    <ul>
-                        <li>konzultace pojistných smluv</li>
-                        <li>uplatňování práv z pojistné smlouvy</li>
-                        <li>řešení sporů z pojistných smluv</li>
-                        <li>právní servis poskytovaný pojšťovacím zprostředkovatelům</li>
-                    </ul>
-                `,
-                'trestni-pravo': `
-                    <h2>Trestní právo</h2>
-                    <ul>
-                        <li>obhajoba obviněného v trestním řízení</li>
-                        <li>zastupování poškozeného v trestním řízení při vymáhání náhrady škody způsobené trestným činem</li>
-                        <li>zpracování trestních oznámení</li>
-                        <li>poradenství podnikatelům a členům orgánů obchodních korporací při jejich činnosti za účelem prevence trestní odpovědnosti</li>
-                    </ul>
-                `,
-                'insolvencni-pravo': `
-                    <h2>Insolvenční právo</h2>
-                    <ul>
-                        <li>insolvenční návrhy</li>
-                        <li>přihlášky pohledávek do insolvenčního řízení</li>
-                        <li>zastupování věřitelů v insolvenčním řízení</li>
-                        <li>zastoupení v incidenčních sporech</li>
-                    </ul>
-                `,
-                'rozvody': `
-                    <h2>Rozvody a vypořádání společného jmění</h2>
-                    <ul>
-                        <li>rozvody</li>
-                        <li>soudní i mimosoudní vypořádání společného jmění</li>
-                        <li>úprava rozsahu společného jmění</li>
-                    </ul>
-                `
-            };
-            
-            return services[serviceId] || '<h2>Služba nenalezena</h2><p>Požadovaná služba není k dispozici.</p>';
-        }
-        
-        window.onclick = function(event) {
-            const modal = document.getElementById('serviceModal');
-            if (event.target === modal) {
-                closeServiceModal();
-            }
-        }
-    </script>
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div>
+        <span class="label">Advokátní kancelář v Ostravě-Porubě</span>
+        <h1>Právní pomoc, na kterou se můžete <em>spolehnout.</em></h1>
+        <p class="lead">Poskytujeme právní služby podnikatelům i občanům — od smluv a nemovitostí přes vymáhání pohledávek a rodinné věci až po obhajobu v trestním řízení. Nejdřív si vás vyslechneme, potom hledáme řešení, které je pro vás nejlepší.</p>
+        <div class="cta">
+          <a class="btn primary" href="#rezervace">Objednat se na konzultaci</a>
+          <a class="btn quiet" href="tel:+420604321443">Zavolat 604 321 443</a>
+        </div>
+        <ul class="points">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg><span>Osobní přístup — vaši věc řeší advokát, který ji zná od začátku</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg><span>Odměnu se dozvíte předem, dohodou a bez překvapení</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg><span>Spolupracujeme s notáři, účetními, znalci i tlumočníky</span></li>
+        </ul>
+      </div>
+      <aside class="slip" aria-label="Nejbližší volné termíny">
+        <span class="label">Volné termíny na konzultaci</span>
+        <h3 style="margin-top:8px">Vyberte si čas, který vám vyhovuje</h3>
+        <p class="sub">Objednání zabere minutu. Zbytek vyřídíme při schůzce.</p>
+        <ul class="slots" id="nextSlots"></ul>
+        <div class="foot"><span>Konzultace trvá zpravidla 45–60 minut.</span><a class="link" href="#rezervace">Zobrazit celý kalendář</a></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="block paper" id="kancelar">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="label">O kanceláři</span>
+        <h2>Právo, které problémům předchází.</h2>
+        <p>Řešení právních otázek stavíme na důkladném poznání potřeb klienta. Cílem je najít optimální řešení — a tam, kde to jde, rizikům předejít průběžným právním poradenstvím.</p>
+      </div>
+      <div class="about">
+        <div class="text reveal">
+          <p>Advokátní kancelář se zaměřuje na poskytování právních služeb podnikatelům i občanům v základních právních odvětvích, zejména v oblasti práva obchodního, občanského, trestního, pracovního, správního a práva duševního vlastnictví. Právní služby pokrývají potřeby vznikající jak při podnikatelské činnosti, tak i v běžném životě.</p>
+          <p>Klientům zajišťujeme komplexní servis — v případě potřeby ve spolupráci s odborníky z příbuzných oborů. Díky této spolupráci dokážeme posoudit všechny stránky případu a nabídnout nejlepší řešení, aniž byste museli obcházet několik kanceláří.</p>
+        </div>
+        <div class="reveal">
+          <div class="list-card">
+            <h4>S čím vám pomůžeme</h4>
+            <ul>
+              <li>Konzultace a právní porady</li>
+              <li>Právní rozbory a posouzení</li>
+              <li>Sepis žalob a jiných podání</li>
+              <li>Zastupování před soudy, rozhodci a úřady</li>
+              <li>Příprava smluv a dalších dokumentů</li>
+              <li>Průběžný dohled nad právními záležitostmi firmy</li>
+              <li>Jednání s protistranou o smírném řešení</li>
+            </ul>
+          </div>
+          <div class="list-card">
+            <h4>Spolupracující odborníci</h4>
+            <ul>
+              <li>Notáři</li>
+              <li>Účetní a daňoví poradci</li>
+              <li>Patentoví zástupci</li>
+              <li>Exekutoři</li>
+              <li>Znalci a tlumočníci</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="sluzby">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="label">Právní služby</span>
+        <h2>V čem se na nás můžete obrátit</h2>
+        <p>Klikněte na oblast, která vás zajímá — zobrazí se, s čím konkrétně pomáháme. Ke každé oblasti se rovnou můžete objednat na konzultaci.</p>
+      </div>
+      <div class="svc reveal" id="svcList"></div>
+    </div>
+  </section>
+
+  <section class="block paper" id="odmena">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="label">Odměna za právní služby</span>
+        <h2>Cenu znáte předem.</h2>
+        <p>Odměna se ve většině případů sjednává dohodou podle právní a časové náročnosti věci. Vedle odměny se účtuje náhrada hotových výdajů, například soudní poplatky.</p>
+      </div>
+      <div class="fees reveal">
+        <div class="fee"><span class="label">Hodinová odměna</span><h3>Podle stráveného času</h3><p>Vhodná pro konzultace, právní rozbory a věci, jejichž rozsah nelze předem odhadnout.</p></div>
+        <div class="fee"><span class="label">Odměna za vyřízení věci</span><h3>Pevná částka</h3><p>Za konkrétní záležitost — sepis smlouvy, převod nemovitosti, založení společnosti. Bez překvapení na konci.</p></div>
+        <div class="fee"><span class="tag">pro firmy</span><span class="label">Paušální odměna</span><h3>Pravidelná platba</h3><p>Pro klienty, kteří právní služby potřebují pravidelně: dohodnutá částka placená například měsíčně a průběžný dohled nad vašimi právními záležitostmi.</p></div>
+      </div>
+      <p class="fine reveal"><b>Není-li odměna dohodnuta</b>, řídí se výše mimosmluvní odměny vyhláškou Ministerstva spravedlnosti č. 177/1996 Sb. (advokátní tarif). Vedle odměny se účtují hotové výdaje spojené s věcí — cestovní náhrady, soudní a správní poplatky, náhrada za promeškaný čas, náklady na překlady a znalecké posudky.</p>
+    </div>
+  </section>
+
+  <section class="block" id="rezervace">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="label">Objednání na konzultaci</span>
+        <h2>Vyberte den a čas, který vám vyhovuje.</h2>
+        <p>Zeleně označené dny mají volné termíny. Objednání potvrdíme telefonicky nebo e-mailem. Na schůzku si prosím přineste dokumenty, které se vaší věci týkají.</p>
+      </div>
+      <div class="book-grid reveal">
+        <div class="cal" id="pubCal"></div>
+        <div id="bookPane"></div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="block" id="dotazy">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="label">Časté dotazy</span>
+        <h2>Na co se lidé ptají nejčastěji</h2>
+      </div>
+      <div class="svc reveal" id="faqList"><div class="svc-row"><button aria-expanded="false"><h3>Kolik stojí konzultace nebo právní služba?</h3><span class="count"></span><span class="plus"></span></button><div class="svc-body"><div><div class="svc-inner" style="grid-template-columns:1fr"><p style="font-size:18px;color:var(--ink-2);max-width:70ch">Odměna se ve většině případů sjednává dohodou předem podle právní a časové náročnosti věci — hodinově, pevnou částkou za vyřízení věci, nebo paušálně pro firmy. Cenu se dozvíte dřív, než začneme. Není-li odměna dohodnuta, řídí se advokátním tarifem (vyhláška č. 177/1996 Sb.). Vedle odměny se účtují hotové výdaje, například soudní poplatky.</p></div></div></div></div><div class="svc-row"><button aria-expanded="false"><h3>Jak se objednat na schůzku?</h3><span class="count"></span><span class="plus"></span></button><div class="svc-body"><div><div class="svc-inner" style="grid-template-columns:1fr"><p style="font-size:18px;color:var(--ink-2);max-width:70ch">Nejrychleji přes kalendář na této stránce — vyberete den a čas a vyplníte kontakt. Objednat se můžete také telefonicky na čísle 604 321 443 nebo e-mailem na micanik.advokat@email.cz. Termín vždy potvrdíme.</p></div></div></div></div><div class="svc-row"><button aria-expanded="false"><h3>Kde kancelář sídlí?</h3><span class="count"></span><span class="plus"></span></button><div class="svc-body"><div><div class="svc-inner" style="grid-template-columns:1fr"><p style="font-size:18px;color:var(--ink-2);max-width:70ch">Na adrese Slavíkova 6068/18, 708 00 Ostrava-Poruba. Osobní schůzky domlouváme předem, aby se vám advokát mohl plně věnovat.</p></div></div></div></div><div class="svc-row"><button aria-expanded="false"><h3>Co si vzít na první schůzku?</h3><span class="count"></span><span class="plus"></span></button><div class="svc-body"><div><div class="svc-inner" style="grid-template-columns:1fr"><p style="font-size:18px;color:var(--ink-2);max-width:70ch">Všechny dokumenty, které se vaší věci týkají — smlouvy, dopisy, výzvy, rozhodnutí úřadů nebo soudů. Pokud jednáte za firmu, přineste i doklad o tom, že jste oprávněni za ni jednat. Na místě společně probereme, jaké kroky dávají smysl.</p></div></div></div></div><div class="svc-row"><button aria-expanded="false"><h3>Pro koho jsou právní služby určeny?</h3><span class="count"></span><span class="plus"></span></button><div class="svc-body"><div><div class="svc-inner" style="grid-template-columns:1fr"><p style="font-size:18px;color:var(--ink-2);max-width:70ch">Pro podnikatele i občany. Kancelář se věnuje obchodnímu a občanskému právu, nemovitostem, pracovnímu právu, právu duševního vlastnictví, vymáhání pohledávek, stavebnímu, pojišťovacímu, trestnímu a insolvenčnímu právu a rozvodům s vypořádáním společného jmění.</p></div></div></div></div></div>
+    </div>
+  </section>
+  <section class="block paper" id="kontakt">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="label">Kontakt</span>
+        <h2>Najdete nás v Ostravě-Porubě.</h2>
+        <p>Kancelář sídlí na ulici Slavíkova. Osobní schůzky domlouváme předem — telefonicky, e-mailem nebo přes kalendář výše.</p>
+      </div>
+      <div class="contact reveal">
+        <div class="cards">
+          <div class="card"><span class="label">Telefon</span><a href="tel:+420604321443">604 321 443</a></div>
+          <div class="card"><span class="label">E-mail</span><a href="mailto:micanik.advokat@email.cz">micanik.advokat@email.cz</a></div>
+          <div class="card"><span class="label">Adresa kanceláře</span><a href="https://mapy.cz/?q=Slav%C3%ADkova%206068%2F18%2C%20Ostrava-Poruba" target="_blank" rel="noopener">Slavíkova 6068/18<br>708 00 Ostrava-Poruba</a><p class="muted" style="font-size:16px;margin-top:4px">Mgr. Ondřej Mičaník, advokát</p></div>
+        </div>
+        <div class="map" aria-label="Mapa — Slavíkova 6068/18, Ostrava-Poruba">
+          <svg viewBox="0 0 600 340" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs><pattern id="g" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#EEE8DE" stroke-width="1"/></pattern></defs>
+            <rect width="600" height="340" fill="url(#g)"/>
+            <path d="M-20 120 C120 100, 220 140, 340 110 S 560 90, 640 120" fill="none" stroke="#E2DACE" stroke-width="14" stroke-linecap="round"/>
+            <path d="M-20 120 C120 100, 220 140, 340 110 S 560 90, 640 120" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+            <path d="M120 -20 C140 80, 110 200, 150 360" fill="none" stroke="#E2DACE" stroke-width="10"/>
+            <path d="M120 -20 C140 80, 110 200, 150 360" fill="none" stroke="#FFFFFF" stroke-width="6"/>
+            <path d="M260 360 C300 250, 380 220, 620 240" fill="none" stroke="#E2DACE" stroke-width="10"/>
+            <path d="M260 360 C300 250, 380 220, 620 240" fill="none" stroke="#FFFFFF" stroke-width="6"/>
+            <path d="M420 -20 L 380 360" fill="none" stroke="#E2DACE" stroke-width="8"/>
+            <path d="M420 -20 L 380 360" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+            <rect x="300" y="140" width="46" height="28" rx="2" fill="#F4EFE6" stroke="#E2DACE"/>
+            <rect x="200" y="170" width="60" height="26" rx="2" fill="#F4EFE6" stroke="#E2DACE"/>
+            <rect x="450" y="150" width="70" height="40" rx="2" fill="#F4EFE6" stroke="#E2DACE"/>
+            <rect x="330" y="200" width="60" height="40" rx="2" fill="#F4EFE6" stroke="#E2DACE"/>
+            <text x="20" y="300" font-family="Source Sans 3, sans-serif" font-size="13" fill="#726D66">Ostrava-Poruba · orientační mapka</text>
+          </svg>
+          <div class="pin"><b>Slavíkova 6068/18</b><i></i></div>
+          <a class="btn quiet small open" href="https://mapy.cz/?q=Slav%C3%ADkova%206068%2F18%2C%20Ostrava-Poruba" target="_blank" rel="noopener">Otevřít v Mapy.cz</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div>
+        <p><b>Mgr. Ondřej Mičaník, advokát</b></p>
+        <p>Slavíkova 6068/18, 708 00 Ostrava-Poruba<br>Telefon 604 321 443 · micanik.advokat@email.cz</p>
+        <p>Advokát zapsaný v seznamu advokátů vedeném Českou advokátní komorou.</p>
+      </div>
+      <div>
+        <p>Česká advokátní komora byla dne 5. 2. 2016 pověřena Ministerstvem průmyslu a obchodu ČR mimosoudním řešením spotřebitelských sporů pro oblast sporů mezi advokátem a spotřebitelem ze smluv o poskytování právních služeb (na základě zákona č. 634/1992 Sb., o ochraně spotřebitele). Internetová stránka pověřeného subjektu: <a href="https://www.cak.cz" target="_blank" rel="noopener">www.cak.cz</a>.</p>
+        <p>Informace o zpracování osobních údajů poskytujeme na vyžádání a při převzetí věci. © <span id="year"></span> Advokátní kancelář Mgr. Ondřeje Mičaníka.</p>
+      </div>
+    </div>
+  </footer>
+</main></div>
+
+<!-- ======================= INTRANET ======================= -->
+<div id="intranet"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- DATA ---------------- */
+const AREAS = [
+  {id:"obchodni", name:"Obchodní právo", groups:[
+    ["Obchodní společnosti",["zakládání obchodních korporací","změny zakládacích dokumentů, změny zápisu v obchodním rejstříku","zrušení a likvidace obchodních korporací","zastoupení ve věcech obchodního rejstříku","převody obchodních podílů","soudní spory ve věcech obchodních korporací"]],
+    ["Obchodní smlouvy a závazky",["sepis a konzultace obchodních smluv","soudní spory z obchodních závazkových vztahů","uplatňování práv z obchodních smluv — reklamace, náhrada škody","vymáhání pohledávek z obchodních vztahů"]],
+    ["Hospodářská soutěž",["problematika nekalé soutěže","právní ochrana obchodního tajemství"]]]},
+  {id:"obcanske", name:"Občanské právo", groups:[
+    ["Vlastnictví, zástavy, věcná břemena",["převody vlastnického práva (nemovitosti, byty, podíly)","soudní ochrana vlastnického práva","zrušení a vypořádání spoluvlastnictví","vypořádání společného jmění manželů při rozvodu","spory o vlastnictví, věcná břemena, zástavní právo"]],
+    ["Smlouvy a závazky",["sepis a konzultace smluv (kupní, o dílo, nájemní…)","náhrada škody a bezdůvodné obohacení","řešení sporů soudní i mimosoudní cestou","zajištění závazků","ochrana osobnosti — peněžité zadostiučinění"]],
+    ["Dědické právo",["sepis závětí, listin o vydědění a dohod dědiců","zastupování v řízení o dědictví"]],
+    ["Exekuce a veřejné dražby",["návrhy na exekuce, obrana před exekucí","problematika veřejných dražeb"]]]},
+  {id:"nemovitosti", name:"Nemovitosti", groups:[
+    ["Převody a katastr",["smlouvy o převodech nemovitostí a bytů","převody členství v bytových družstvech","návrhy na zápis práv do katastru nemovitostí","zastupování před katastrálním úřadem","zástavní práva a věcná břemena k nemovitostem"]],
+    ["Bydlení a nájmy",["nájem a podnájem bytů — smlouvy, výpovědi","vypořádání bydlení v souvislosti s rozvodem","zakládání SVJ a bytových družstev, zpracování stanov","nebytové prostory — smlouvy o nájmu a podnájmu","spory o vlastnictví a nájem nemovitostí"]]]},
+  {id:"pracovni", name:"Pracovní právo", groups:[
+    ["Pro zaměstnavatele i zaměstnance",["příprava a konzultace pracovních smluv","pracovněprávní úkony zaměstnavatele — jmenování, odvolání, rozvázání poměru","manažerské smlouvy","náhrada škody, dohody o hmotné odpovědnosti","interní dokumenty — pracovní řády, prémiové řády","zastupování v pracovněprávních sporech"]]]},
+  {id:"dusevni", name:"Právo duševního vlastnictví", groups:[
+    ["Autorská a průmyslová práva",["autorské právo a práva související","patenty, užitné vzory, průmyslové vzory","ochranné známky — registrace, převody, licence, ochrana","zastoupení před Úřadem průmyslového vlastnictví","soudní spory z duševního vlastnictví"]]]},
+  {id:"pohledavky", name:"Vymáhání pohledávek", groups:[
+    ["Soudně i mimosoudně",["vymáhání pohledávek soudní a rozhodčí cestou","dohody o splácení dluhu","zprostředkování odprodeje a odkupu pohledávek","zajištění pohledávek — zástavy, směnky, zajišťovací převody","vymáhání v rámci exekuce","evidence a správa pohledávek věřitelů","přihlášky pohledávek v insolvenčním řízení"]]]},
+  {id:"stavebni", name:"Stavební právo", groups:[["Řízení před úřady",["zastupování v řízení před stavebními úřady"]]]},
+  {id:"pojistovaci", name:"Pojišťovací právo", groups:[["Pojistné smlouvy",["konzultace pojistných smluv","uplatňování práv z pojistné smlouvy","řešení sporů z pojistných smluv","právní servis pojišťovacím zprostředkovatelům"]]]},
+  {id:"trestni", name:"Trestní právo", groups:[["Obhajoba a zastupování",["obhajoba obviněného v trestním řízení","zastupování poškozeného — náhrada škody","zpracování trestních oznámení","prevence trestní odpovědnosti podnikatelů a členů orgánů korporací"]]]},
+  {id:"insolvencni", name:"Insolvenční právo", groups:[["Věřitelé i dlužníci",["insolvenční návrhy","přihlášky pohledávek do insolvenčního řízení","zastupování věřitelů v insolvenčním řízení","zastoupení v incidenčních sporech"]]]},
+  {id:"rozvody", name:"Rozvody a společné jmění", groups:[["Rodinné věci",["rozvody","soudní i mimosoudní vypořádání společného jmění","úprava rozsahu společného jmění"]]]},
+];
+const DEFAULT_TIMES = ["09:00","10:30","13:00","14:30","16:00"];
+const DOW = ["Po","Út","St","Čt","Pá","So","Ne"];
+const DOW_LONG = ["pondělí","úterý","středa","čtvrtek","pátek","sobota","neděle"];
+const MONTHS = ["leden","únor","březen","duben","květen","červen","červenec","srpen","září","říjen","listopad","prosinec"];
+const MONTHS_GEN = ["ledna","února","března","dubna","května","června","července","srpna","září","října","listopadu","prosince"];
+const KEY = "mk-advokat-v2";
+
+const pad = n => String(n).padStart(2,"0");
+const iso = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parse = s => { const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); };
+const addDays = (d,n) => { const x=new Date(d); x.setDate(x.getDate()+n); return x; };
+const fmtDate = s => { const d=parse(s); return `${d.getDate()}. ${d.getMonth()+1}. ${d.getFullYear()}`; };
+const fmtLong = s => { const d=parse(s); return `${DOW_LONG[(d.getDay()+6)%7]} ${d.getDate()}. ${MONTHS_GEN[d.getMonth()]}`; };
+const fmtLongY = s => `${fmtLong(s)} ${parse(s).getFullYear()}`;
+const fmtDow = s => DOW[(parse(s).getDay()+6)%7];
+const money = n => new Intl.NumberFormat("cs-CZ",{style:"currency",currency:"CZK",maximumFractionDigits:0}).format(n);
+const todayIso = () => iso(new Date());
+const uid = () => Math.random().toString(36).slice(2,8).toUpperCase();
+
+let S = null;
+function load(){ try{ const raw=localStorage.getItem(KEY); if(raw) S=JSON.parse(raw);}catch(e){} if(!S) S=seed(); }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function seed(){
+  const st = {slots:{}, bookings:[], invoices:[], notes:[], settings:{times:DEFAULT_TIMES, duration:60, vat:false, ico:"", cak:"", bank:""}, seq:{inv:3}};
+  const t = new Date(); let d = addDays(t,1); let count=0;
+  while(count<24){ const dow=d.getDay(); if(dow>=1&&dow<=5){ st.slots[iso(d)] = [...DEFAULT_TIMES]; count++; } d=addDays(d,1); }
+  const days = Object.keys(st.slots).sort();
+  const sample = [
+    {date:days[0], time:"10:30", name:"Petr Novák", phone:"777 123 456", email:"petr.novak@example.cz", area:"nemovitosti", note:"Kupní smlouva na byt v Porubě, prodávající tlačí na termín.", status:"potvrzená", by:"web"},
+    {date:days[1], time:"09:00", name:"Stavební firma Moravia s.r.o.", phone:"596 111 222", email:"info@moravia-stav.example", area:"obchodni", note:"Změna společenské smlouvy, převod podílu.", status:"nová", by:"web"},
+    {date:days[2], time:"14:30", name:"Jana Dvořáková", phone:"602 987 654", email:"", area:"rozvody", note:"Vypořádání společného jmění, dům a hypotéka.", status:"potvrzená", by:"kancelář"},
+    {date:days[4], time:"13:00", name:"Tomáš Krejčí", phone:"731 555 000", email:"t.krejci@example.cz", area:"pohledavky", note:"Neuhrazené faktury 180 tis. Kč, dlužník nekomunikuje.", status:"nová", by:"web"},
+  ];
+  sample.forEach(b=>{ b.id="R-"+uid(); b.created=new Date().toISOString(); st.bookings.push(b); st.slots[b.date]=st.slots[b.date].filter(x=>x!==b.time); });
+  const y = t.getFullYear();
+  st.invoices = [
+    {id:"I1", number:`${y}-001`, client:"Stavební firma Moravia s.r.o.", address:"Hlavní třída 12, 708 00 Ostrava-Poruba", ico:"12345678", issued:iso(addDays(t,-24)), due:iso(addDays(t,-10)), items:[{desc:"Právní služby — sepis smlouvy o dílo",qty:4,unit:2500},{desc:"Konzultace",qty:1,unit:2500}], paid:true, paidOn:iso(addDays(t,-12))},
+    {id:"I2", number:`${y}-002`, client:"Petr Novák", address:"Nálepkova 5, 708 00 Ostrava-Poruba", ico:"", issued:iso(addDays(t,-9)), due:iso(addDays(t,5)), items:[{desc:"Právní rozbor kupní smlouvy",qty:3,unit:2500}], paid:false},
+    {id:"I3", number:`${y}-003`, client:"Autodoprava Kubica", address:"Opavská 100, 708 00 Ostrava-Poruba", ico:"87654321", issued:iso(addDays(t,-31)), due:iso(addDays(t,-17)), items:[{desc:"Paušální odměna — srpen",qty:1,unit:12000}], paid:false},
+  ];
+  st.notes = [
+    {id:"N1", title:"Novák — byt Poruba", body:"Prověřit list vlastnictví a zástavní právo banky. Klient chce podpis do 14 dní.\nÚschova: notář Hrabovská?", tag:"spis", pin:true, updated:new Date().toISOString()},
+    {id:"N2", title:"Lhůty tento týden", body:"• Odvolání Kubica — do pátku\n• Přihláška pohledávky do insolvence — 7 dní\n• Doplnit plnou moc Dvořáková", tag:"lhůty", pin:true, updated:new Date().toISOString()},
+    {id:"N3", title:"Nápad na paušál pro živnostníky", body:"Balíček: kontrola 2 smluv měsíčně + 1 hodina konzultace. Zeptat se účetní na fakturaci.", tag:"kancelář", pin:false, updated:new Date().toISOString()},
+  ];
+  return st;
+}
+const areaName = id => (AREAS.find(a=>a.id===id)||{}).name || (id==="jine"?"Jiné":id);
+const freeSlots = () => Object.entries(S.slots).flatMap(([d,ts])=>ts.map(t=>({date:d,time:t}))).filter(s=>s.date>=todayIso()).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+
+/* ---------------- VEŘEJNÝ WEB ---------------- */
+const $ = (q,el=document)=>el.querySelector(q);
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),2600); }
+
+let pub = {month:null, day:null, time:null, area:"", done:null};
+function renderPublic(){
+  $("#year").textContent = new Date().getFullYear();
+  renderPublicSlips();
+  $("#svcList").innerHTML = AREAS.map(a=>`<div class="svc-row" id="svc-${a.id}"><button aria-expanded="false"><h3>${a.name}</h3><span class="count">${a.groups.reduce((n,g)=>n+g[1].length,0)} služeb</span><span class="plus"></span></button><div class="svc-body"><div><div class="svc-inner">${a.groups.map(g=>`<div><h4>${g[0]}</h4><ul>${g[1].map(i=>`<li>${i}</li>`).join("")}</ul></div>`).join("")}<div class="book"><a class="btn small" href="#rezervace" data-area="${a.id}">Objednat se — ${a.name.toLowerCase()}</a></div></div></div></div>`).join("");
+  $("#svcList").querySelectorAll(".svc-row>button").forEach(b=>b.onclick=()=>{ const r=b.parentElement; const open=r.classList.toggle("open"); b.setAttribute("aria-expanded",open); });
+  document.querySelectorAll("#faqList .svc-row>button").forEach(b=>b.onclick=()=>{ const r=b.parentElement; const open=r.classList.toggle("open"); b.setAttribute("aria-expanded",open); });
+  $("#svcList").querySelectorAll("a[data-area]").forEach(a=>a.onclick=()=>{ pub.area=a.dataset.area; pub.done=null; renderBookPane(); });
+  if(!pub.month) pub.month = todayIso().slice(0,7);
+  renderCal(); renderBookPane();
+}
+function renderPublicSlips(){
+  const next=freeSlots().slice(0,3);
+  $("#nextSlots").innerHTML = next.map(s=>`<li><span class="d"><b>${fmtLong(s.date)}</b><span>v ${s.time} hodin</span></span><button class="go" data-d="${s.date}" data-t="${s.time}">Objednat</button></li>`).join("") || `<li><span class="d"><b>Momentálně nejsou volné termíny</b><span>zavolejte nám, najdeme jiný</span></span></li>`;
+  $("#nextSlots").querySelectorAll(".go").forEach(b=>b.onclick=()=>{ pub.day=b.dataset.d; pub.time=b.dataset.t; pub.month=b.dataset.d.slice(0,7); pub.done=null; renderCal(); renderBookPane(); location.hash="#rezervace"; });
+}
+function renderCal(){
+  const [y,m] = pub.month.split("-").map(Number);
+  const first = new Date(y,m-1,1); const startPad = (first.getDay()+6)%7; const days = new Date(y,m,0).getDate();
+  const today = todayIso();
+  let cells = "";
+  for(let i=0;i<startPad;i++) cells += `<div class="day pad"></div>`;
+  for(let d=1;d<=days;d++){ const k=`${y}-${pad(m)}-${pad(d)}`; const has=(S.slots[k]||[]).length>0 && k>=today; cells += `<div class="day ${has?"has":""} ${k===pub.day?"sel":""} ${k===today?"today":""}" data-d="${k}" ${has?'role="button" tabindex="0"':""} aria-label="${fmtLongY(k)}${has?", volné termíny":""}">${d}</div>`; }
+  const prevOk = pub.month > today.slice(0,7);
+  $("#pubCal").innerHTML = `<div class="cal-head"><h3>${MONTHS[m-1]} ${y}</h3><div class="cal-nav"><button id="cprev" aria-label="Předchozí měsíc" ${prevOk?"":"disabled"}>‹</button><button id="cnext" aria-label="Další měsíc">›</button></div></div><div class="dow">${DOW.map(d=>`<span>${d}</span>`).join("")}</div><div class="days">${cells}</div><div class="legend"><span><i></i>dny s volnými termíny</span><span>Konzultace 45–60 minut, Slavíkova 18</span></div>`;
+  const shift = n => { const d=new Date(y,m-1+n,1); pub.month=iso(d).slice(0,7); renderCal(); };
+  $("#cprev").onclick=()=>shift(-1); $("#cnext").onclick=()=>shift(1);
+  $("#pubCal").querySelectorAll(".day.has").forEach(c=>{ const pick=()=>{ pub.day=c.dataset.d; pub.time=null; pub.done=null; renderCal(); renderBookPane(); }; c.onclick=pick; c.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();pick();} }; });
+}
+function renderBookPane(){
+  const p = $("#bookPane");
+  if(pub.done){ const b=pub.done; p.innerHTML = `<div class="confirm"><span class="label" style="color:var(--ok)">Objednání přijato</span><h3>Děkujeme, termín je zapsán.</h3><p style="font-size:19px"><b>${fmtLongY(b.date)} v ${b.time} hodin</b><br>${areaName(b.area)}</p><p class="muted">Číslo vaší objednávky</p><p class="code">${b.id}</p><p class="muted" style="font-size:16px">Potvrzení pošleme na ${b.email||b.phone}. Pokud se nemůžete dostavit, dejte nám prosím vědět alespoň den předem na telefon 604 321 443.</p><div><button class="btn quiet small" id="again">Objednat další termín</button></div></div>`; $("#again").onclick=()=>{pub.done=null;pub.day=null;pub.time=null;renderCal();renderBookPane();}; return; }
+  if(!pub.day){ p.innerHTML = `<div class="form"><span class="label">Krok 1 ze 3</span><h3>Vyberte den v kalendáři vlevo</h3><p class="muted">Ukážeme vám volné časy. Pokud vám žádný nevyhovuje, zavolejte nám — najdeme jiný.</p><div class="pick">Zatím není vybrán žádný termín.</div></div>`; return; }
+  const times = (S.slots[pub.day]||[]).slice().sort();
+  const taken = S.bookings.filter(b=>b.date===pub.day && b.status!=="zrušená").map(b=>b.time);
+  const all = [...new Set([...times,...taken])].sort();
+  p.innerHTML = `<div class="form"><span class="label">Krok ${pub.time?"3":"2"} ze 3 — ${pub.time?"vaše údaje":"vyberte čas"}</span><h3>${fmtLongY(pub.day)}</h3>
+    <div class="times">${all.map(t=>`<button class="time ${t===pub.time?"sel":""} ${taken.includes(t)?"taken":""}" data-t="${t}" ${taken.includes(t)?"disabled":""}>${t}</button>`).join("")}</div>
+    <div class="pick ${pub.time?"on":""}">${pub.time?`${fmtLongY(pub.day)}, ${pub.time} – ${endTime(pub.time)} hodin`:"Vyberte čas, který vám vyhovuje."}</div>
+    <form id="bookForm" ${pub.time?"":"hidden"}>
+      <div class="fields">
+        <div class="two"><label>Jméno a příjmení (nebo firma)<input id="bName" required autocomplete="name"></label><label>Telefon<input id="bPhone" required type="tel" autocomplete="tel"></label></div>
+        <div class="two"><label>E-mail (nepovinné)<input id="bEmail" type="email" autocomplete="email"></label><label>Čeho se věc týká<select id="bArea">${AREAS.map(a=>`<option value="${a.id}" ${a.id===pub.area?"selected":""}>${a.name}</option>`).join("")}<option value="jine" ${pub.area==="jine"?"selected":""}>Jiné / nevím</option></select></label></div>
+        <label>Stručný popis (nepovinné)<textarea id="bNote" rows="3" placeholder="Např. kupní smlouva na byt, protistrana navrhuje podpis příští týden…"></textarea></label>
+        <p class="note">Odesláním souhlasíte se zpracováním údajů pro účely sjednání schůzky. Cenu konzultace vám sdělíme předem.</p>
+        <div><button class="btn primary" type="submit">Odeslat objednání</button></div>
+      </div>
+    </form></div>`;
+  p.querySelectorAll(".time:not(.taken)").forEach(b=>b.onclick=()=>{ pub.time=b.dataset.t; renderBookPane(); $("#bName")?.focus(); });
+  const f=$("#bookForm"); if(f) f.onsubmit=e=>{ e.preventDefault(); const b={id:"R-"+uid(), date:pub.day, time:pub.time, name:$("#bName").value.trim(), phone:$("#bPhone").value.trim(), email:$("#bEmail").value.trim(), area:$("#bArea").value, note:$("#bNote").value.trim(), status:"nová", by:"web", created:new Date().toISOString()}; S.bookings.push(b); S.slots[b.date]=(S.slots[b.date]||[]).filter(t=>t!==b.time); save(); pub.done=b; renderCal(); renderBookPane(); renderPublicSlips(); };
+}
+function endTime(t){ const [h,m]=t.split(":").map(Number); const x=new Date(2000,0,1,h,m+ (S.settings.duration||60)); return `${pad(x.getHours())}:${pad(x.getMinutes())}`; }
+
+/* ---------------- INTRANET ---------------- */
+let IN = {authed:false, view:"prehled", month:todayIso().slice(0,7), day:null, invoiceView:null, editNote:null};
+function renderIntranet(){
+  const root=$("#intranet");
+  if(!IN.authed){ root.innerHTML = `<div class="login"><form class="box" id="loginForm"><a class="brand" href="#top"><span class="mark">M</span><span><b>Přístup pro kancelář</b><small>Mgr. Ondřej Mičaník, advokát</small></span></a><label class="label" for="pinInput">Přístupový kód</label><input class="pincode" id="pinInput" type="password" inputmode="numeric" maxlength="6" autocomplete="off" autofocus><p class="err" id="loginErr"></p><button class="btn primary" type="submit">Vstoupit</button><p class="hint">Ukázkový přístup pro prototyp: kód <b>1234</b>. V ostré verzi bude přihlášení e-mailem a heslem s ověřením přes SMS.</p><a class="link" href="#top">Zpět na web</a></form></div>`;
+    $("#loginForm").onsubmit=e=>{ e.preventDefault(); if($("#pinInput").value==="1234"){ IN.authed=true; renderIntranet(); } else { $("#loginErr").textContent="Kód nesouhlasí. Zkuste to prosím znovu."; $("#pinInput").value=""; $("#pinInput").focus(); } };
+    return; }
+  const newCount = S.bookings.filter(b=>b.status==="nová" && b.date>=todayIso()).length;
+  const nav = [["prehled","Přehled"],["kalendar","Kalendář"],["rezervace","Objednávky"],["klienti","Klienti"],["faktury","Faktury"],["poznamky","Poznámky"],["nastaveni","Nastavení"]];
+  root.innerHTML = `<div class="app"><aside class="side"><a class="brand" href="#top"><span class="mark">M</span><span><b>Kancelář</b><small>interní systém</small></span></a><nav>${nav.map(([k,l])=>`<button class="${IN.view===k?"on":""}" data-v="${k}">${l}${k==="rezervace"&&newCount?`<span class="k">${newCount}</span>`:""}</button>`).join("")}</nav><div class="bottom"><span>Přihlášen: Mgr. Ondřej Mičaník</span><a class="link" href="#top" id="logout">Odhlásit a zpět na web</a></div></aside><main class="main" id="main"></main></div>`;
+  root.querySelectorAll(".side nav button").forEach(b=>b.onclick=()=>{ IN.view=b.dataset.v; IN.invoiceView=null; renderIntranet(); });
+  $("#logout").onclick=()=>{ IN.authed=false; };
+  ({prehled:vPrehled, kalendar:vKalendar, rezervace:vRezervace, klienti:vKlienti, faktury:vFaktury, poznamky:vPoznamky, nastaveni:vNastaveni})[IN.view]();
+}
+const topbar = (title, extra="") => `<div class="topbar"><div><p class="date">${fmtLongY(todayIso())}</p><h2>${title}</h2></div><div>${extra}</div></div>`;
+const st = s => `<span class="st ${({"nová":"new","potvrzená":"ok","proběhla":"","zrušená":"bad"})[s]||""}">${s}</span>`;
+const invTotal = i => i.items.reduce((n,x)=>n+x.qty*x.unit,0);
+
+function vPrehled(){
+  const t=todayIso(); const todays=S.bookings.filter(b=>b.date===t&&b.status!=="zrušená").sort((a,b)=>a.time.localeCompare(b.time));
+  const upcoming=S.bookings.filter(b=>b.date>=t&&b.status!=="zrušená").sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)).slice(0,6);
+  const unpaid=S.invoices.filter(i=>!i.paid); const overdue=unpaid.filter(i=>i.due<t);
+  const newB=S.bookings.filter(b=>b.status==="nová"&&b.date>=t).length;
+  $("#main").innerHTML = topbar("Dobrý den, tady je přehled kanceláře.", `<button class="btn primary small" id="goCal">Zapsat schůzku</button>`) + `
+    <div class="tiles">
+      <div class="tile"><span class="label">Dnes</span><div class="n">${todays.length}<small>${todays.length===1?"schůzka":todays.length>=2&&todays.length<=4?"schůzky":"schůzek"}</small></div></div>
+      <div class="tile ${newB?"alert":""}"><span class="label">Nové objednávky z webu</span><div class="n">${newB}<small>čekají na potvrzení</small></div></div>
+      <div class="tile ${overdue.length?"alert":""}"><span class="label">Nezaplacené faktury</span><div class="n">${money(unpaid.reduce((n,i)=>n+invTotal(i),0))}<small>${overdue.length} po splatnosti</small></div></div>
+      <div class="tile"><span class="label">Volné termíny na webu</span><div class="n">${freeSlots().length}<small>v příštích týdnech</small></div></div>
+    </div>
+    <div class="cols">
+      <div class="panel"><h3>Nejbližší schůzky <a class="link" href="#" data-v="rezervace">Všechny objednávky</a></h3>${upcoming.length?`<div class="tblwrap"><table><thead><tr><th>Kdy</th><th>Klient</th><th>Stav</th></tr></thead><tbody>${upcoming.map(b=>`<tr><td class="when">${fmtDow(b.date)} ${fmtDate(b.date)}<br><span class="muted">${b.time}</span></td><td><b>${b.name}</b><div class="muted small">${areaName(b.area)}</div></td><td>${st(b.status)}</td></tr>`).join("")}</tbody></table></div>`:`<p class="empty">Žádné nadcházející schůzky.</p>`}</div>
+      <div class="panel"><h3>Připnuté poznámky <a class="link" href="#" data-v="poznamky">Všechny poznámky</a></h3><div class="notes">${S.notes.filter(n=>n.pin).map(noteCard).join("")||`<p class="empty">Nic připnutého.</p>`}</div></div>
+    </div>`;
+  $("#goCal").onclick=()=>{IN.view="kalendar";renderIntranet();};
+  $("#main").querySelectorAll("a[data-v]").forEach(a=>a.onclick=e=>{e.preventDefault();IN.view=a.dataset.v;renderIntranet();});
+  $("#main").querySelectorAll(".note-card[data-id]").forEach(c=>c.onclick=()=>{IN.view="poznamky";IN.editNote={...S.notes.find(n=>n.id===c.dataset.id)};renderIntranet();});
+}
+function noteCard(n){ return `<div class="note-card ${n.pin?"pinned":""}" data-id="${n.id}" role="button" tabindex="0"><h4>${n.title}</h4><p>${n.body}</p><div class="meta"><span>${n.tag}</span><span>${fmtDate(n.updated.slice(0,10))}</span></div></div>`; }
+
+function vKalendar(){
+  const [y,m]=IN.month.split("-").map(Number); const first=new Date(y,m-1,1); const startPad=(first.getDay()+6)%7; const days=new Date(y,m,0).getDate(); const t=todayIso();
+  let cells=""; for(let i=0;i<startPad;i++) cells+=`<div class="day pad"></div>`;
+  for(let d=1;d<=days;d++){ const k=`${y}-${pad(m)}-${pad(d)}`; const free=(S.slots[k]||[]).length; const booked=S.bookings.filter(b=>b.date===k&&b.status!=="zrušená").length; cells+=`<div class="day ${free?"has":""} ${k===IN.day?"sel":""} ${k===t?"today":""}" data-d="${k}" role="button" tabindex="0" title="${free} volných, ${booked} obsazených" ${booked&&!free?'style="color:var(--accent);background:var(--accent-soft);border:1.5px solid #E4C9C4;cursor:pointer"':""}>${d}${booked?`<small style="position:absolute;top:3px;right:6px;font-size:12px;color:var(--accent)">${booked}</small>`:""}</div>`; }
+  const day = IN.day;
+  let right = `<div class="panel"><h3>Vyberte den</h3><p class="empty">Klikněte na den v kalendáři. Můžete přidat volné termíny, které uvidí klienti na webu, nebo rovnou zapsat schůzku.</p></div>`;
+  if(day){
+    const free=(S.slots[day]||[]).slice().sort(); const bk=S.bookings.filter(b=>b.date===day&&b.status!=="zrušená").sort((a,b)=>a.time.localeCompare(b.time));
+    const rows=[...free.map(tm=>({time:tm,free:true})),...bk.map(b=>({time:b.time,b}))].sort((a,b)=>a.time.localeCompare(b.time));
+    right = `<div class="panel"><h3>${fmtLongY(day)} <span class="sub">${free.length} volných, ${bk.length} obsazených</span></h3>
+      <div class="slotlist">${rows.map(r=>r.free?`<div class="slotrow free"><span class="t">${r.time}</span><span class="muted">volný termín — klienti ho vidí na webu</span><span class="row-actions"><button class="link" data-book="${r.time}">Zapsat schůzku</button><button class="link" data-rm="${r.time}">Odebrat</button></span></div>`:`<div class="slotrow"><span class="t">${r.time}</span><span><b>${r.b.name}</b> <span class="muted">· ${areaName(r.b.area)} · ${r.b.phone}</span>${r.b.note?`<div class="muted small">${r.b.note}</div>`:""}</span><span class="row-actions">${st(r.b.status)}${r.b.status==="nová"?`<button class="link" data-ok="${r.b.id}">Potvrdit</button>`:""}<button class="link" data-cancel="${r.b.id}">Zrušit</button></span></div>`).join("")||`<p class="empty">Na tento den nejsou žádné termíny.</p>`}</div>
+      <div class="inline" style="margin-top:18px"><label>Nový volný termín<input type="time" id="newTime" value="09:00" step="900"></label><button class="btn small" id="addTime">Přidat termín</button><button class="btn small quiet" id="addStd">Otevřít obvyklé časy (${S.settings.times.join(", ")})</button></div>
+    </div>
+    <div class="panel" id="manualPanel" hidden><h3>Zapsat schůzku <span class="sub" id="manualWhen"></span></h3><form id="manualForm" class="fields"><div class="two"><label>Klient<input id="mName" required></label><label>Telefon<input id="mPhone"></label></div><div class="two"><label>E-mail<input id="mEmail" type="email"></label><label>Věc<select id="mArea">${AREAS.map(a=>`<option value="${a.id}">${a.name}</option>`).join("")}<option value="jine">Jiné</option></select></label></div><label>Poznámka<input id="mNote"></label><div class="inline"><button class="btn primary small" type="submit">Uložit schůzku</button><button class="btn small quiet" type="button" id="manualCancel">Zrušit</button></div></form></div>`;
+  }
+  $("#main").innerHTML = topbar("Kalendář") + `<div class="grid2"><div class="cal"><div class="cal-head"><h3>${MONTHS[m-1]} ${y}</h3><div class="cal-nav"><button id="iprev" aria-label="Předchozí měsíc">‹</button><button id="inext" aria-label="Další měsíc">›</button></div></div><div class="dow">${DOW.map(d=>`<span>${d}</span>`).join("")}</div><div class="days">${cells}</div><div class="legend"><span><i></i>volné termíny</span><span><i style="background:var(--accent-soft);border-color:#E4C9C4"></i>obsazeno (číslo = počet schůzek)</span></div></div><div>${right}</div></div>`;
+  const shift=n=>{const d=new Date(y,m-1+n,1);IN.month=iso(d).slice(0,7);renderIntranet();};
+  $("#iprev").onclick=()=>shift(-1); $("#inext").onclick=()=>shift(1);
+  $("#main").querySelectorAll(".day:not(.pad)").forEach(c=>{ const pick=()=>{IN.day=c.dataset.d;renderIntranet();}; c.onclick=pick; c.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();pick();} }; });
+  if(!day) return;
+  $("#addTime").onclick=()=>{ const v=$("#newTime").value; if(!v) return; S.slots[day]=[...new Set([...(S.slots[day]||[]),v])]; save(); toast(`Termín ${v} je volný a klienti ho vidí na webu.`); renderIntranet(); };
+  $("#addStd").onclick=()=>{ const taken=S.bookings.filter(b=>b.date===day&&b.status!=="zrušená").map(b=>b.time); S.slots[day]=[...new Set([...(S.slots[day]||[]),...S.settings.times.filter(t=>!taken.includes(t))])]; save(); toast("Obvyklé časy otevřeny."); renderIntranet(); };
+  $("#main").querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{ S.slots[day]=(S.slots[day]||[]).filter(t=>t!==b.dataset.rm); save(); renderIntranet(); });
+  $("#main").querySelectorAll("[data-ok]").forEach(b=>b.onclick=()=>{ const r=S.bookings.find(x=>x.id===b.dataset.ok); r.status="potvrzená"; save(); toast(`Schůzka s klientem ${r.name} potvrzena.`); renderIntranet(); });
+  $("#main").querySelectorAll("[data-cancel]").forEach(b=>b.onclick=()=>{ const r=S.bookings.find(x=>x.id===b.dataset.cancel); r.status="zrušená"; S.slots[day]=[...new Set([...(S.slots[day]||[]),r.time])]; save(); toast(`Schůzka zrušena, termín ${r.time} je opět volný.`); renderIntranet(); });
+  $("#main").querySelectorAll("[data-book]").forEach(b=>b.onclick=()=>{ const p=$("#manualPanel"); p.hidden=false; p.dataset.time=b.dataset.book; $("#manualWhen").textContent=`${fmtLong(day)} v ${b.dataset.book}`; $("#mName").focus(); });
+  $("#manualCancel").onclick=()=>{$("#manualPanel").hidden=true;};
+  $("#manualForm").onsubmit=e=>{ e.preventDefault(); const tm=$("#manualPanel").dataset.time; const r={id:"R-"+uid(),date:day,time:tm,name:$("#mName").value.trim(),phone:$("#mPhone").value.trim(),email:$("#mEmail").value.trim(),area:$("#mArea").value,note:$("#mNote").value.trim(),status:"potvrzená",by:"kancelář",created:new Date().toISOString()}; S.bookings.push(r); S.slots[day]=(S.slots[day]||[]).filter(t=>t!==tm); save(); toast("Schůzka zapsána."); renderIntranet(); };
+}
+
+function vRezervace(){
+  const t=todayIso(); const list=S.bookings.slice().sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
+  const up=list.filter(b=>b.date>=t), past=list.filter(b=>b.date<t);
+  const row=b=>`<tr><td class="when">${fmtDow(b.date)} ${fmtDate(b.date)}<br><span class="muted">${b.time}</span></td><td><b>${b.name}</b><div class="muted small">${b.phone}${b.email?" · "+b.email:""}</div></td><td>${areaName(b.area)}${b.note?`<div class="muted small">${b.note}</div>`:""}</td><td class="muted">${b.by}</td><td>${st(b.status)}</td><td><div class="row-actions">${b.status==="nová"?`<button class="link" data-ok="${b.id}">Potvrdit</button>`:""}${b.status!=="zrušená"&&b.date>=t?`<button class="link" data-cancel="${b.id}">Zrušit</button>`:""}${b.status==="potvrzená"&&b.date<=t?`<button class="link" data-done="${b.id}">Proběhla</button>`:""}</div></td></tr>`;
+  const tbl=rows=>`<div class="tblwrap"><table><thead><tr><th>Termín</th><th>Klient</th><th>Věc</th><th>Zdroj</th><th>Stav</th><th></th></tr></thead><tbody>${rows.map(row).join("")}</tbody></table></div>`;
+  $("#main").innerHTML = topbar("Objednávky") + `<div class="panel"><h3>Nadcházející <span class="sub">${up.length}</span></h3>${up.length?tbl(up.reverse()):`<p class="empty">Nic nadcházejícího.</p>`}</div><div class="panel"><h3>Proběhlé</h3>${past.length?tbl(past):`<p class="empty">Zatím žádné.</p>`}</div>`;
+  const act=(sel,fn)=>$("#main").querySelectorAll(sel).forEach(b=>b.onclick=()=>{fn(S.bookings.find(x=>x.id===b.dataset.ok||x.id===b.dataset.cancel||x.id===b.dataset.done));save();renderIntranet();});
+  act("[data-ok]",r=>{r.status="potvrzená";toast(`Potvrzeno: ${r.name}`);});
+  act("[data-cancel]",r=>{r.status="zrušená";S.slots[r.date]=[...new Set([...(S.slots[r.date]||[]),r.time])];toast("Zrušeno, termín uvolněn.");});
+  act("[data-done]",r=>{r.status="proběhla";});
+}
+
+function vKlienti(){
+  const map={};
+  S.bookings.forEach(b=>{const k=b.name; map[k]=map[k]||{name:k,phone:b.phone,email:b.email,meetings:0,areas:new Set(),invoiced:0,last:""}; map[k].meetings++; map[k].areas.add(areaName(b.area)); if(b.date>map[k].last) map[k].last=b.date;});
+  S.invoices.forEach(i=>{const k=i.client; map[k]=map[k]||{name:k,phone:"",email:"",meetings:0,areas:new Set(),invoiced:0,last:""}; map[k].invoiced+=invTotal(i);});
+  const rows=Object.values(map).sort((a,b)=>a.name.localeCompare(b.name,"cs"));
+  $("#main").innerHTML = topbar("Klienti") + `<div class="panel"><h3>Přehled klientů <span class="sub">${rows.length} · sestaveno z objednávek a faktur</span></h3><div class="tblwrap"><table><thead><tr><th>Klient</th><th>Kontakt</th><th>Agenda</th><th class="num">Schůzek</th><th class="num">Fakturováno</th><th>Naposledy</th></tr></thead><tbody>${rows.map(c=>`<tr><td><b>${c.name}</b></td><td class="muted small">${c.phone}${c.email?"<br>"+c.email:""}</td><td class="muted small">${[...c.areas].join(", ")||"—"}</td><td class="num">${c.meetings}</td><td class="num">${c.invoiced?money(c.invoiced):"—"}</td><td class="when">${c.last?fmtDate(c.last):"—"}</td></tr>`).join("")}</tbody></table></div></div>`;
+}
+
+function vFaktury(){
+  const t=todayIso();
+  if(IN.invoiceView==="new"){ return invoiceForm(); }
+  if(IN.invoiceView){ const i=S.invoices.find(x=>x.id===IN.invoiceView); return invoiceDetail(i); }
+  const list=S.invoices.slice().sort((a,b)=>b.number.localeCompare(a.number));
+  $("#main").innerHTML = topbar("Faktury", `<button class="btn primary small" id="newInv">Vystavit fakturu</button>`) + `<div class="panel"><div class="tblwrap"><table><thead><tr><th>Číslo</th><th>Klient</th><th>Vystaveno</th><th>Splatnost</th><th class="num">Částka</th><th>Stav</th><th></th></tr></thead><tbody>${list.map(i=>`<tr><td class="when">${i.number}</td><td><b>${i.client}</b></td><td class="when">${fmtDate(i.issued)}</td><td class="when">${fmtDate(i.due)}</td><td class="num">${money(invTotal(i))}</td><td>${i.paid?`<span class="st ok">zaplaceno</span>`:i.due<t?`<span class="st bad">po splatnosti</span>`:`<span class="st warn">čeká na úhradu</span>`}</td><td><div class="row-actions"><button class="link" data-open="${i.id}">Otevřít</button>${i.paid?"":`<button class="link" data-paid="${i.id}">Zaplaceno</button>`}</div></td></tr>`).join("")}</tbody></table></div><div class="sum"><span class="muted">Nezaplaceno celkem</span><b>${money(list.filter(i=>!i.paid).reduce((n,i)=>n+invTotal(i),0))}</b></div></div>`;
+  $("#newInv").onclick=()=>{IN.invoiceView="new";renderIntranet();};
+  $("#main").querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{IN.invoiceView=b.dataset.open;renderIntranet();});
+  $("#main").querySelectorAll("[data-paid]").forEach(b=>b.onclick=()=>{const i=S.invoices.find(x=>x.id===b.dataset.paid);i.paid=true;i.paidOn=t;save();toast(`Faktura ${i.number} označena jako zaplacená.`);renderIntranet();});
+}
+function invoiceDetail(i){
+  $("#main").innerHTML = topbar(`Faktura ${i.number}`, `<div class="row-actions no-print"><button class="btn small quiet" id="back">Zpět na seznam</button><button class="btn small" id="print">Tisk / uložit PDF</button>${i.paid?"":`<button class="btn small primary" id="mark">Označit jako zaplacenou</button>`}</div>`) + `<div class="invoice-view"><header><div><h3>Faktura ${i.number}</h3><p class="muted">${i.paid?`Zaplaceno ${fmtDate(i.paidOn)}`:`Splatnost ${fmtDate(i.due)}`}</p></div><div style="text-align:right">Vystaveno ${fmtDate(i.issued)}<br>Splatnost ${fmtDate(i.due)}</div></header><div class="parties"><div><h4>Dodavatel</h4><b>Mgr. Ondřej Mičaník, advokát</b><br>Slavíkova 6068/18<br>708 00 Ostrava-Poruba${S.settings.ico?`<br>IČ ${S.settings.ico}`:""}${S.settings.cak?`<br>ev. č. ČAK ${S.settings.cak}`:""}${S.settings.vat?"":"<br><span class='muted'>Neplátce DPH</span>"}</div><div><h4>Odběratel</h4><b>${i.client}</b><br>${i.address||""}${i.ico?`<br>IČ ${i.ico}`:""}</div></div><table><thead><tr><th>Položka</th><th class="num">Množství</th><th class="num">Sazba</th><th class="num">Celkem</th></tr></thead><tbody>${i.items.map(x=>`<tr><td>${x.desc}</td><td class="num">${x.qty}</td><td class="num">${money(x.unit)}</td><td class="num">${money(x.qty*x.unit)}</td></tr>`).join("")}</tbody></table><p class="total">Celkem k úhradě ${money(invTotal(i))}</p>${S.settings.bank?`<p class="muted" style="font-size:15px;margin-top:10px">Bankovní spojení: ${S.settings.bank} · variabilní symbol ${i.number.replace("-","")}</p>`:""}</div>`;
+  $("#back").onclick=()=>{IN.invoiceView=null;renderIntranet();}; $("#print").onclick=()=>window.print();
+  const m=$("#mark"); if(m) m.onclick=()=>{i.paid=true;i.paidOn=todayIso();save();renderIntranet();};
+}
+function invoiceForm(){
+  const t=new Date(); const y=t.getFullYear(); const num=`${y}-${String(S.seq.inv+1).padStart(3,"0")}`;
+  let items=[{desc:"Právní služby — konzultace",qty:1,unit:2500}];
+  const clients=[...new Set([...S.invoices.map(i=>i.client),...S.bookings.map(b=>b.name)])];
+  const draw=()=>{ $("#items").innerHTML = items.map((x,k)=>`<div class="item"><input value="${x.desc}" data-k="${k}" data-f="desc" placeholder="Popis položky"><input type="number" min="0" step="0.5" value="${x.qty}" data-k="${k}" data-f="qty" aria-label="Množství"><input type="number" min="0" step="100" value="${x.unit}" data-k="${k}" data-f="unit" aria-label="Sazba v Kč"><button type="button" data-del="${k}" aria-label="Odebrat položku">×</button></div>`).join(""); $("#tot").textContent=money(items.reduce((n,x)=>n+x.qty*x.unit,0)); $("#items").querySelectorAll("input").forEach(i=>i.oninput=()=>{const x=items[i.dataset.k]; x[i.dataset.f]=i.dataset.f==="desc"?i.value:Number(i.value); $("#tot").textContent=money(items.reduce((n,x)=>n+x.qty*x.unit,0));}); $("#items").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{items.splice(b.dataset.del,1);draw();}); };
+  $("#main").innerHTML = topbar("Nová faktura", `<button class="btn small quiet" id="back">Zpět na seznam</button>`) + `<form class="panel fields" id="invForm" style="max-width:840px"><div class="two"><label>Číslo faktury<input id="fNum" value="${num}"></label><label>Klient<input id="fClient" list="clients" required><datalist id="clients">${clients.map(c=>`<option value="${c}">`).join("")}</datalist></label></div><div class="two"><label>Adresa klienta<input id="fAddr"></label><label>IČ klienta<input id="fIco"></label></div><div class="two"><label>Vystaveno<input type="date" id="fIssued" value="${iso(t)}"></label><label>Splatnost<input type="date" id="fDue" value="${iso(addDays(t,14))}"></label></div><div><span class="label" style="display:block;margin-bottom:8px">Položky — popis, množství, sazba v Kč</span><div class="items" id="items"></div><button class="link" type="button" id="addItem" style="margin-top:10px">+ Přidat položku</button></div><div class="sum"><span class="muted">Celkem</span><b id="tot"></b></div><div class="inline"><button class="btn primary small" type="submit">Vystavit fakturu</button></div></form>`;
+  draw(); $("#addItem").onclick=()=>{items.push({desc:"",qty:1,unit:2500});draw();};
+  $("#back").onclick=()=>{IN.invoiceView=null;renderIntranet();};
+  $("#invForm").onsubmit=e=>{ e.preventDefault(); const inv={id:"I"+uid(),number:$("#fNum").value.trim(),client:$("#fClient").value.trim(),address:$("#fAddr").value.trim(),ico:$("#fIco").value.trim(),issued:$("#fIssued").value,due:$("#fDue").value,items:items.filter(x=>x.desc),paid:false}; S.invoices.push(inv); S.seq.inv++; save(); toast(`Faktura ${inv.number} vystavena.`); IN.invoiceView=inv.id; renderIntranet(); };
+}
+
+function vPoznamky(){
+  const q=(IN.q||"").toLowerCase();
+  const list=S.notes.filter(n=>!q||(n.title+n.body+n.tag).toLowerCase().includes(q)).sort((a,b)=>(b.pin-a.pin)||b.updated.localeCompare(a.updated));
+  const e=IN.editNote;
+  $("#main").innerHTML = topbar("Poznámky", `<button class="btn primary small" id="newNote">Nová poznámka</button>`) + `${e?`<form class="panel fields" id="noteForm" style="max-width:740px;margin-bottom:18px"><div class="two"><label>Název<input id="nTitle" value="${e.title||""}" required></label><label>Štítek<input id="nTag" value="${e.tag||"spis"}" list="tags"><datalist id="tags"><option value="spis"><option value="lhůty"><option value="kancelář"><option value="klient"></datalist></label></div><label>Text<textarea id="nBody" rows="5">${e.body||""}</textarea></label><label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="nPin" style="width:20px;height:20px" ${e.pin?"checked":""}> Připnout na přehled</label><div class="inline"><button class="btn primary small" type="submit">Uložit</button><button class="btn small quiet" type="button" id="nCancel">Zrušit</button>${e.id?`<button class="link" type="button" id="nDel" style="color:var(--bad)">Smazat poznámku</button>`:""}</div></form>`:""}<div class="panel"><div class="inline" style="margin-bottom:16px"><label style="flex:1;min-width:260px">Hledat<input id="q" value="${IN.q||""}" placeholder="název, text nebo štítek"></label></div><div class="notes" id="noteList">${list.map(noteCard).join("")||`<p class="empty">Žádné poznámky.</p>`}</div></div>`;
+  $("#newNote").onclick=()=>{IN.editNote={pin:false};renderIntranet();};
+  $("#q").oninput=ev=>{IN.q=ev.target.value; const pos=ev.target.value.length; renderIntranet(); const i=$("#q"); i.focus(); i.setSelectionRange(pos,pos);};
+  $("#main").querySelectorAll(".note-card[data-id]").forEach(c=>c.onclick=()=>{IN.editNote={...S.notes.find(n=>n.id===c.dataset.id)};renderIntranet();});
+  if(e){ $("#nCancel").onclick=()=>{IN.editNote=null;renderIntranet();}; $("#noteForm").onsubmit=ev=>{ev.preventDefault(); const n={id:e.id||"N"+uid(),title:$("#nTitle").value.trim(),tag:$("#nTag").value.trim()||"spis",body:$("#nBody").value,pin:$("#nPin").checked,updated:new Date().toISOString()}; const k=S.notes.findIndex(x=>x.id===n.id); if(k>=0) S.notes[k]=n; else S.notes.unshift(n); save(); IN.editNote=null; toast("Poznámka uložena."); renderIntranet();}; const d=$("#nDel"); if(d) d.onclick=()=>{S.notes=S.notes.filter(x=>x.id!==e.id);save();IN.editNote=null;renderIntranet();}; $("#nTitle").focus(); }
+}
+
+function vNastaveni(){
+  const s=S.settings;
+  $("#main").innerHTML = topbar("Nastavení") + `<form class="panel fields" id="setForm" style="max-width:740px"><span class="label">Kalendář</span><div class="two"><label>Obvyklé časy schůzek (oddělené čárkou)<input id="sTimes" value="${s.times.join(", ")}"></label><label>Délka konzultace v minutách<input id="sDur" type="number" min="15" step="15" value="${s.duration}"></label></div><span class="label" style="margin-top:8px">Údaje na faktuře</span><div class="two"><label>IČ<input id="sIco" value="${s.ico}"></label><label>Evidenční číslo ČAK<input id="sCak" value="${s.cak}"></label></div><div class="two"><label>Bankovní spojení<input id="sBank" value="${s.bank}" placeholder="123456789/0100"></label><label style="display:flex;gap:10px;align-items:center;margin-top:24px"><input type="checkbox" id="sVat" style="width:20px;height:20px" ${s.vat?"checked":""}> Plátce DPH</label></div><div class="inline"><button class="btn primary small" type="submit">Uložit nastavení</button><button class="btn small quiet" type="button" id="reset">Obnovit ukázková data</button></div><p class="muted small">Prototyp ukládá data jen do tohoto prohlížeče. V ostré verzi budou data v zabezpečené databázi se zálohováním a přístupem z počítače i telefonu.</p></form>`;
+  $("#setForm").onsubmit=e=>{e.preventDefault(); s.times=$("#sTimes").value.split(",").map(x=>x.trim()).filter(Boolean); s.duration=Number($("#sDur").value)||60; s.ico=$("#sIco").value.trim(); s.cak=$("#sCak").value.trim(); s.bank=$("#sBank").value.trim(); s.vat=$("#sVat").checked; save(); toast("Nastavení uloženo.");};
+  $("#reset").onclick=()=>{ S=seed(); save(); toast("Ukázková data obnovena."); renderIntranet(); };
+}
+
+/* ---------------- SPUŠTĚNÍ ---------------- */
+function route(){ const intra = location.hash.startsWith("#intranet"); document.body.classList.toggle("intra", intra); if(intra) renderIntranet(); else { renderPublicSlips(); } window.scrollTo({top:0}); }
+window.addEventListener("hashchange", ()=>{ if(location.hash.startsWith("#intranet")||document.body.classList.contains("intra")) route(); });
+load(); renderPublic();
+$("#burger").onclick=()=>$("#nav").classList.toggle("open");
+$("#links").querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>$("#nav").classList.remove("open")));
+const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }),{rootMargin:"0px 0px -8% 0px"});
+document.querySelectorAll(".reveal").forEach(r=>io.observe(r));
+if(location.hash.startsWith("#intranet")) route();
+</script>
+
 </body>
 </html>

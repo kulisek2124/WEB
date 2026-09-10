@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+
+# AI vyhledávače a asistenti mají výslovně povolený přístup
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-User
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Bingbot
+Allow: /
+User-agent: SeznamBot
+Allow: /
+
+Sitemap: https://www.micanik-advokat.cz/sitemap.xml
